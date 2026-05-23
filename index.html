@@ -1,1186 +1,1199 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
+
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【投屏大字版】小夥伴的成語森林大冒險！</title>
+    <title>英語時態大冒險 - Tense Adventure</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans TC', 'sans-serif'],
-                        cartoon: ['Fredoka', 'Noto Sans TC', 'sans-serif']
-                    },
-                    colors: {
-                        forest: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            200: '#bbf7d0',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                        },
-                        sun: {
-                            100: '#fef9c3',
-                            300: '#fde047',
-                            400: '#facc15',
-                            500: '#eab308',
-                        },
-                        sky: {
-                            100: '#e0f2fe',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                        },
-                        bubble: {
-                            red: '#fecdd3',
-                            blue: '#bae6fd',
-                            yellow: '#fef08a',
-                            purple: '#e9d5ff',
-                            orange: '#fed7aa',
-                            green: '#bbf7d0',
-                        }
-                    },
-                    boxShadow: {
-                        'cartoon': '0 12px 0px 0px rgba(0,0,0,0.15)',
-                        'cartoon-sm': '0 6px 0px 0px rgba(0,0,0,0.15)',
-                        'cartoon-active': '0 3px 0px 0px rgba(0,0,0,0.15)',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: #f0fdf4;
-            background-image: radial-gradient(#dcfce7 2px, transparent 2px), radial-gradient(#dcfce7 2px, transparent 2px);
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
+            font-family: 'Lexend', 'Microsoft JhengHei', sans-serif;
+            background: radial-gradient(circle, #1e1b4b 0%, #0f172a 100%);
         }
-        /* 雙面卡片翻轉 */
-        .perspective-1000 {
-            perspective: 1200px;
+        .font-game {
+            font-family: 'Fredoka One', 'Microsoft JhengHei', cursive;
         }
-        .preserve-3d {
-            transform-style: preserve-3d;
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .backface-hidden {
-            backface-visibility: hidden;
+        .glass-panel-light {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
-        .rotate-y-180 {
-            transform: rotateY(180deg);
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        /* 卡通漂浮動畫 */
-        @keyframes bounce-slow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
         }
-        .animate-bounce-slow {
-            animation: bounce-slow 3s ease-in-out infinite;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
         }
-        /* 啵啵氣泡動畫 */
-        @keyframes float-bubble {
-            0% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-8px) scale(1.04); }
-            100% { transform: translateY(0px) scale(1); }
-        }
-        .bubble-item {
-            animation: float-bubble 4.5s ease-in-out infinite;
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.8);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between text-slate-800">
+<body class="text-slate-100 min-h-screen flex flex-col justify-between overflow-x-hidden antialiased">
 
-    <!-- 頂部導航列 (森林木紋質感 - 放大版) -->
-    <header class="bg-amber-100 border-b-[12px] border-amber-200 sticky top-0 z-50 py-4 shadow-md">
-        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
-            <div class="flex items-center space-x-4 cursor-pointer" onclick="goMenu()">
-                <!-- 軟萌卡通Logo -->
-                <div class="bg-gradient-to-tr from-emerald-400 to-green-500 text-white p-4 rounded-[32px] shadow-cartoon border-4 border-white transform hover:rotate-6 transition duration-200">
-                    <span class="text-4xl">🌱</span>
-                </div>
-                <div>
-                    <h1 class="text-2xl md:text-4xl font-black text-emerald-900 tracking-wider font-cartoon">成語森林大冒險</h1>
-                    <p class="text-sm md:text-lg text-amber-900 font-extrabold flex items-center mt-1">
-                        <span class="bg-amber-300 text-amber-950 text-xs md:text-sm px-2.5 py-1 rounded-lg mr-2 font-black border border-amber-400">投屏專用大字版</span>
-                        和動物夥伴一起大聲唸！
-                    </p>
-                </div>
-            </div>
+    <!-- Web Audio API Synthesizer Sound Effects (No external assets needed!) -->
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
 
-            <!-- 計分板與音量 -->
-            <div class="flex items-center space-x-4">
-                <button id="btn-sound" onclick="toggleMute()" class="bg-white hover:bg-slate-100 border-4 border-amber-300 text-amber-600 w-16 h-16 rounded-3xl flex items-center justify-center transition shadow-cartoon-sm active:translate-y-0.5 active:shadow-cartoon-active">
-                    <i id="sound-icon" class="fa-solid fa-volume-high text-2xl"></i>
-                </button>
-                <div class="bg-gradient-to-r from-yellow-300 to-amber-400 text-amber-950 font-black px-6 py-3 rounded-3xl border-4 border-amber-500 shadow-cartoon-sm flex items-center space-x-3">
-                    <span class="text-2xl">⭐</span>
-                    <span class="text-sm md:text-xl font-black">森林能量: <span id="user-score" class="text-2xl font-cartoon">0</span></span>
-                </div>
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+                    osc.start(now);
+                    osc.stop(now + 0.1);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.linearRampToValueAtTime(80, now + 0.3);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'victory') {
+                    // Play a short happy chord progression
+                    const notes = [261.63, 329.63, 392.00, 523.25]; // C chord
+                    notes.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(freq, now + idx * 0.1);
+                        g.gain.setValueAtTime(0.1, now + idx * 0.1);
+                        g.gain.linearRampToValueAtTime(0.01, now + idx * 0.1 + 0.5);
+                        o.start(now + idx * 0.1);
+                        o.stop(now + idx * 0.1 + 0.5);
+                    });
+                } else if (type === 'gameover') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(120, now);
+                    osc.frequency.linearRampToValueAtTime(50, now + 0.8);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.8);
+                    osc.start(now);
+                    osc.stop(now + 0.8);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked by browser policy");
+            }
+        }
+    </script>
+
+    <!-- Top Navigation Header -->
+    <header class="w-full glass-panel border-b border-slate-700/50 px-6 py-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 p-2 rounded-lg shadow-lg flex items-center justify-center text-xl text-white">
+                <i class="fa-solid fa-graduation-cap"></i>
             </div>
+            <div>
+                <h1 class="text-lg md:text-xl font-bold tracking-wide font-game text-indigo-400">Tense Adventure</h1>
+                <p class="text-xs text-slate-400">英語時態時空大冒險</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="toggleTeacherPanel()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2 border border-slate-700">
+                <i class="fa-solid fa-chalkboard-user text-indigo-400"></i>
+                <span class="hidden md:inline">教師控制台</span>
+            </button>
         </div>
     </header>
 
-    <!-- 遊戲主舞台 -->
-    <main class="flex-grow max-w-6xl w-full mx-auto px-6 py-8">
-
-        <!-- ================= 1. 主選單頁面 ================= -->
-        <div id="section-menu" class="space-y-10 animate-fade-in">
-            <!-- 森林故事大背景板 (放大排版) -->
-            <div class="bg-gradient-to-b from-sky-100 via-emerald-100 to-green-100 rounded-[50px] p-8 md:p-14 border-[10px] border-emerald-200 shadow-cartoon relative overflow-hidden flex flex-col md:flex-row items-center gap-10">
-                <!-- 可愛動物插圖 (SVG手繪感 - 放大) -->
-                <div class="w-56 h-56 flex-shrink-0 animate-bounce-slow relative">
-                    <svg viewBox="0 0 100 100" class="w-full h-full">
-                        <circle cx="25" cy="25" r="12" fill="#d97706" />
-                        <circle cx="75" cy="25" r="12" fill="#d97706" />
-                        <circle cx="25" cy="25" r="6" fill="#fecdd3" />
-                        <circle cx="75" cy="25" r="6" fill="#fecdd3" />
-                        <circle cx="50" cy="55" r="35" fill="#f59e0b" stroke="#d97706" stroke-width="3" />
-                        <circle cx="30" cy="65" r="6" fill="#fecdd3" opacity="0.8" />
-                        <circle cx="70" cy="65" r="6" fill="#fecdd3" opacity="0.8" />
-                        <circle cx="35" cy="50" r="4.5" fill="#1e293b" />
-                        <circle cx="65" cy="50" r="4.5" fill="#1e293b" />
-                        <circle cx="37" cy="48" r="1.5" fill="#ffffff" />
-                        <circle cx="67" cy="48" r="1.5" fill="#ffffff" />
-                        <ellipse cx="50" cy="65" rx="10" ry="7" fill="#fef08a" />
-                        <circle cx="50" cy="61" r="3" fill="#1e293b" />
-                        <path d="M 46 66 Q 50 70 54 66" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
-                        <path d="M 15 35 Q 50 15 85 35 Z" fill="#22c55e" stroke="#15803d" stroke-width="3" />
-                        <rect x="10" y="32" width="80" height="6" rx="3" fill="#eab308" stroke="#d97706" stroke-width="2" />
-                    </svg>
-                    <div class="absolute -top-6 -right-12 bg-white text-slate-800 text-sm md:text-base font-black px-4 py-2 rounded-2xl border-4 border-amber-300 shadow-md">
-                        嗨！我是熊阿布 🐻
-                    </div>
-                </div>
-
-                <div class="flex-grow space-y-6 text-center md:text-left">
-                    <span class="bg-yellow-300 text-amber-950 text-sm md:text-base font-black uppercase tracking-widest px-5 py-2 rounded-full inline-block border-2 border-amber-400">
-                        🎒 全班大合作！
-                    </span>
-                    <h2 class="text-4xl md:text-6xl font-black text-emerald-950 leading-tight">成語森林被封印了！</h2>
-                    <p class="text-emerald-900 text-lg md:text-2xl font-bold leading-relaxed">
-                        森林裡的成語石碑被小惡魔打亂了！各位同學，快來一起使用你們的「中文魔法」，幫助小動物重回森林，獲得**「金牌森林守護者勳章」**吧！
-                    </p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
-                        <button onclick="startMode('flashcard')" class="bg-emerald-400 hover:bg-emerald-500 text-white font-black px-6 py-6 rounded-[32px] shadow-cartoon border-4 border-emerald-500 transition active:translate-y-1 active:shadow-cartoon-active flex flex-col items-center justify-center space-y-2">
-                            <span class="text-5xl">📖</span>
-                            <span class="text-xl md:text-2xl">1. 意思猜猜樂</span>
-                        </button>
-                        <button onclick="startMode('unscramble')" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-black px-6 py-6 rounded-[32px] shadow-cartoon border-4 border-amber-500 transition active:translate-y-1 active:shadow-cartoon-active flex flex-col items-center justify-center space-y-2">
-                            <span class="text-5xl">🫧</span>
-                            <span class="text-xl md:text-2xl">2. 啵啵氣泡拼拼樂</span>
-                        </button>
-                        <button onclick="startMode('fill')" class="bg-sky-400 hover:bg-sky-500 text-white font-black px-6 py-6 rounded-[32px] shadow-cartoon border-4 border-sky-500 transition active:translate-y-1 active:shadow-cartoon-active flex flex-col items-center justify-center space-y-2">
-                            <span class="text-5xl">💬</span>
-                            <span class="text-xl md:text-2xl">3. 動物真心話連線</span>
-                        </button>
-                    </div>
-                </div>
+    <!-- Main Game Container -->
+    <main class="flex-grow flex items-center justify-center p-4 md:p-6 w-full max-w-5xl mx-auto">
+        
+        <!-- ================= START SCREEN ================= -->
+        <div id="screen-start" class="w-full max-w-2xl glass-panel rounded-3xl p-6 md:p-8 shadow-2xl text-center border border-indigo-500/20 flex flex-col gap-6">
+            <div class="flex justify-center">
+                <!-- Mascot / SVG Icon -->
+                <svg class="w-32 h-32 text-indigo-500 animate-bounce" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#grad)" />
+                    <!-- Shield design inside mascot -->
+                    <path d="M50 25 L70 35 V55 C70 68 50 78 50 78 C50 78 30 68 30 55 V35 Z" fill="#4f46e5" />
+                    <!-- Hourglass -->
+                    <path d="M43 40 H57 L43 60 H57 Z" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+                    <circle cx="50" cy="45" r="2" fill="#e0e7ff" />
+                    <circle cx="50" cy="55" r="2" fill="#e0e7ff" />
+                    <defs>
+                        <radialGradient id="grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" transform="translate(50 50) rotate(90) scale(45)">
+                            <stop stop-color="#818cf8" />
+                            <stop offset="1" stop-color="#4f46e5" />
+                        </radialGradient>
+                    </defs>
+                </svg>
             </div>
 
-            <!-- 8個成語冒險名錄 (超大字卡片) -->
-            <div class="bg-white rounded-[50px] p-8 md:p-10 shadow-cartoon border-[10px] border-amber-200">
-                <div class="flex justify-between items-center mb-8 flex-wrap gap-6">
-                    <div>
-                        <h3 class="text-3xl font-black text-slate-800 flex items-center"><span class="mr-3">🧩</span> 8大成語學習狀態</h3>
-                        <p class="text-sm md:text-lg text-slate-500 font-bold mt-2">點擊卡片，全班一起大聲複習其意思與例句！</p>
-                    </div>
-                    <div class="bg-emerald-100 text-emerald-900 font-black px-6 py-3 rounded-2xl border-4 border-emerald-200 text-lg md:text-2xl">
-                        收集進度：<span id="mastery-count" class="font-cartoon text-3xl">0</span> / 8
-                    </div>
-                </div>
-
-                <!-- 8個巨型可愛成語卡 -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="idioms-grid">
-                    <!-- JS 動態填入 -->
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ================= 2. 意思猜猜樂 (Flashcard Mode 改版) ================= -->
-        <div id="section-flashcard" class="hidden max-w-4xl mx-auto space-y-8">
-            <div class="flex justify-between items-center">
-                <button onclick="goMenu()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 border-4 border-amber-300 font-black px-6 py-3 rounded-2xl shadow-cartoon-sm flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-xl">
-                    <i class="fa-solid fa-arrow-left"></i> <span>回選單</span>
-                </button>
-                <span class="text-lg md:text-2xl font-black bg-emerald-100 text-emerald-800 px-6 py-3 rounded-full border-4 border-emerald-300 font-cartoon" id="flashcard-progress">1 / 8</span>
-            </div>
-
-            <!-- 巨型投影卡片 -->
-            <div class="perspective-1000 w-full h-[450px] md:h-[500px] cursor-pointer" onclick="flipCard()">
-                <div id="flashcard-inner" class="preserve-3d duration-500 w-full h-full relative">
-                    
-                    <!-- 卡片正面 (呈現解釋，大字體，高對比) -->
-                    <div class="backface-hidden absolute inset-0 bg-white rounded-[50px] shadow-cartoon border-[12px] border-emerald-300 flex flex-col justify-between p-10 text-center">
-                        <div class="text-right">
-                            <span class="bg-amber-100 text-amber-800 border-2 border-amber-300 px-4 py-2 rounded-full text-sm md:text-lg font-black animate-pulse inline-block">🤔 猜猜這是哪一個成語？</span>
-                        </div>
-                        <div class="my-auto space-y-6 px-4">
-                            <!-- 可愛巨型頭像 -->
-                            <div class="text-7xl md:text-8xl" id="fc-avatar">🐰</div>
-                            <!-- 顯示解釋的大文字，長句會動態縮放 -->
-                            <h2 class="text-3xl md:text-5xl font-black text-emerald-800 leading-relaxed filter drop-shadow-sm" id="fc-word">形容心慌意亂，拿不定主意。</h2>
-                        </div>
-                        <!-- 修正：將包含 fc-num 的編號區域加回 HTML，修復 JavaScript 執行錯誤 -->
-                        <div class="text-slate-400 text-lg font-black font-cartoon">
-                            🔮 點選卡片任意處或點「揭曉答案」 <span class="text-sm opacity-60 ml-2">(成語編號: <span id="fc-num">1</span>)</span>
-                        </div>
-                    </div>
-
-                    <!-- 卡片背面 (呈現答案 - 巨型成語與造句) -->
-                    <div class="backface-hidden rotate-y-180 absolute inset-0 bg-gradient-to-br from-amber-50 to-white rounded-[50px] shadow-cartoon border-[12px] border-amber-300 flex flex-col justify-between p-8 md:p-12 text-center">
-                        <div class="text-left">
-                            <span class="bg-emerald-100 text-emerald-800 px-5 py-2 rounded-2xl text-base md:text-xl font-black inline-block">🎉 正確答案是：</span>
-                        </div>
-                        <div class="my-auto">
-                            <!-- 超大成語字體 -->
-                            <h2 class="text-6xl md:text-8xl font-black text-amber-600 tracking-widest filter drop-shadow-md" id="fc-meaning">六神無主</h2>
-                        </div>
-                        <div class="border-t-[6px] border-dashed border-amber-200 pt-6">
-                            <span class="bg-sky-100 text-sky-950 px-5 py-2 rounded-2xl text-base md:text-xl font-black inline-block">💬 句子範例</span>
-                            <p class="text-xl md:text-3xl font-bold text-slate-700 leading-relaxed pt-3" id="fc-example">聽到奶奶入院的消息，家人頓時變得六神無主。</p>
-                        </div>
-                        <div class="text-center text-sm md:text-base text-amber-600 font-extrabold">
-                            👈 點擊卡片可看回題目
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- 控制列 (巨型按鈕) -->
-            <div class="flex items-center justify-between gap-6">
-                <button onclick="prevCard()" class="bg-white hover:bg-slate-50 border-4 border-emerald-300 text-emerald-800 font-black px-8 py-4 rounded-2xl shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl">
-                    <i class="fa-solid fa-chevron-left"></i> <span>上一個</span>
-                </button>
-
-                <!-- 答對加分按鈕 (傳遞 event 以生成星星) -->
-                <button onclick="toggleMasteryCurrent(event)" id="btn-mastery-card" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-black px-10 py-4 rounded-2xl shadow-cartoon-sm transition flex items-center space-x-3 border-4 border-amber-500 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl">
-                    <i class="fa-solid fa-check"></i> <span id="mastery-card-text">🏆 全班答對了！加 10 點能量</span>
-                </button>
-
-                <button onclick="nextCard()" class="bg-white hover:bg-slate-50 border-4 border-emerald-300 text-emerald-800 font-black px-8 py-4 rounded-2xl shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl">
-                    <span>下一個</span> <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-
-
-        <!-- ================= 3. 啵啵氣泡拼拼樂 (Unscramble Word Mode) ================= -->
-        <div id="section-unscramble" class="hidden max-w-4xl mx-auto space-y-8">
-            <div class="flex justify-between items-center">
-                <button onclick="goMenu()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 border-4 border-amber-300 font-black px-6 py-3 rounded-2xl shadow-cartoon-sm flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-xl">
-                    <i class="fa-solid fa-arrow-left"></i> <span>回選單</span>
-                </button>
-                <div class="flex items-center space-x-3">
-                    <span class="text-base md:text-xl font-black text-slate-500">啵啵關卡:</span>
-                    <span class="text-lg md:text-2xl font-black bg-amber-100 text-amber-800 px-4 py-2 rounded-full border-4 border-amber-300 font-cartoon" id="unscramble-progress">1 / 8</span>
-                </div>
-            </div>
-
-            <!-- 解釋提示板 (超級放大) -->
-            <div class="bg-white rounded-[40px] p-8 shadow-cartoon border-[10px] border-yellow-200 relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 text-8xl opacity-15">💬</div>
-                <span class="bg-amber-400 text-amber-950 px-5 py-2 rounded-2xl text-base md:text-xl font-black">
-                    🔬 依據字意，全班大合唱拼出成語！
-                </span>
-                <p class="text-2xl md:text-4xl font-black text-slate-900 mt-6 leading-relaxed" id="unscramble-meaning">
-                    形容心慌意亂，拿不定主意。
+            <div>
+                <h2 class="text-3xl md:text-4xl font-game font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-pink-400 to-amber-400">
+                    時態時空守護者
+                </h2>
+                <p class="text-slate-300 mt-2 text-sm md:text-base">
+                    邪惡的「時空混亂魔王」把時間軸打亂了！<br>
+                    各位勇士，請運用你們的文法知識，逐一收復被摧毀的時態島嶼，拯救世界吧！
                 </p>
             </div>
 
-            <!-- 拼字框 (巨型水滴氣泡插槽) -->
-            <div class="flex justify-center items-center space-x-6 py-4">
-                <div class="unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-800 transition shadow-inner" id="u-slot-0"></div>
-                <div class="unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-800 transition shadow-inner" id="u-slot-1"></div>
-                <div class="unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-800 transition shadow-inner" id="u-slot-2"></div>
-                <div class="unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-800 transition shadow-inner" id="u-slot-3"></div>
-            </div>
-
-            <!-- 巨型字體氣泡區 -->
-            <div class="bg-sky-50 p-8 rounded-[40px] border-[8px] border-sky-100 relative">
-                <p class="text-center text-sm md:text-lg font-black text-sky-600 mb-6 uppercase tracking-widest flex items-center justify-center">
-                    🎈 點選下方大泡泡完成拼圖 (有干擾泡泡唷！)
-                </p>
-                <div class="flex flex-wrap justify-center gap-6 md:gap-8" id="unscramble-bubbles">
-                    <!-- 巨型字泡按鈕 (JS動態生成) -->
+            <!-- Avatar Selection -->
+            <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+                <p class="text-indigo-300 font-bold mb-3 text-sm">選擇你的勇士頭像</p>
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="selectAvatar('wizard', this)" class="avatar-btn p-3 rounded-xl border-2 border-indigo-500 bg-indigo-500/20 hover:scale-105 transition-all text-center">
+                        <span class="text-3xl block">🧙‍♂️</span>
+                        <span class="text-xs text-slate-300 mt-1 block">魔法師</span>
+                    </button>
+                    <button onclick="selectAvatar('explorer', this)" class="avatar-btn p-3 rounded-xl border-2 border-transparent bg-slate-800 hover:border-slate-700 hover:scale-105 transition-all text-center">
+                        <span class="text-3xl block">🤠</span>
+                        <span class="text-xs text-slate-400 mt-1 block">探險家</span>
+                    </button>
+                    <button onclick="selectAvatar('knight', this)" class="avatar-btn p-3 rounded-xl border-2 border-transparent bg-slate-800 hover:border-slate-700 hover:scale-105 transition-all text-center">
+                        <span class="text-3xl block">🛡️</span>
+                        <span class="text-xs text-slate-400 mt-1 block">聖騎士</span>
+                    </button>
+                    <button onclick="selectAvatar('scholar', this)" class="avatar-btn p-3 rounded-xl border-2 border-transparent bg-slate-800 hover:border-slate-700 hover:scale-105 transition-all text-center">
+                        <span class="text-3xl block">🧑‍🎓</span>
+                        <span class="text-xs text-slate-400 mt-1 block">小學者</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- 控制鈕 -->
-            <div class="flex justify-between items-center">
-                <button onclick="resetCurrentUnscramble()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-black px-6 py-4 rounded-2xl shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-xl">
-                    <i class="fa-solid fa-rotate-left"></i> <span>清除重填</span>
-                </button>
-                <button id="btn-unscramble-next" onclick="nextUnscrambleQuestion()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-white font-black px-8 py-4 rounded-2xl border-4 border-emerald-600 shadow-cartoon-sm transition items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-xl">
-                    <span>下一題</span> <i class="fa-solid fa-chevron-right"></i>
+            <!-- Name Input & Start Buttons -->
+            <div class="flex flex-col md:flex-row gap-3">
+                <input id="player-name" type="text" placeholder="輸入你的勇士稱號..." class="bg-slate-900/80 border border-slate-700 text-slate-100 rounded-xl px-4 py-3 outline-none focus:border-indigo-500 flex-grow text-center md:text-left">
+                <button onclick="startGame()" class="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold font-game px-8 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-lg">
+                    進入島嶼地圖 <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </div>
         </div>
 
-
-        <!-- ================= 4. 動物真心話連線 (Fill-in-the-Blanks Mode) ================= -->
-        <div id="section-fill" class="hidden max-w-4xl mx-auto space-y-8">
-            <div class="flex justify-between items-center">
-                <button onclick="goMenu()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 border-4 border-amber-300 font-black px-6 py-3 rounded-2xl shadow-cartoon-sm flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-xl">
-                    <i class="fa-solid fa-arrow-left"></i> <span>回選單</span>
-                </button>
-                <div class="flex items-center space-x-3">
-                    <span class="text-base md:text-xl font-black text-slate-500">真心話進度:</span>
-                    <span class="text-lg md:text-2xl font-black bg-sky-100 text-sky-800 px-4 py-2 rounded-full border-4 border-sky-300 font-cartoon" id="fill-progress">1 / 8</span>
-                </div>
-            </div>
-
-            <!-- 可愛動物真心話對話框 (超級投影大字) -->
-            <div class="bg-white rounded-[50px] p-8 md:p-12 shadow-cartoon border-[10px] border-sky-300 relative">
-                <!-- 迷你角色頭像 (放大) -->
-                <div class="absolute -top-10 left-10 bg-sky-400 border-[6px] border-white text-4xl md:text-5xl w-20 h-20 rounded-full flex items-center justify-center shadow-lg animate-bounce" id="fill-animal-avatar">
-                    🐱
-                </div>
-                
-                <div class="my-4 pt-6">
-                    <p class="text-base md:text-xl text-sky-600 font-black mb-2">🐾 夥伴 <span id="fill-animal-name" class="underline">咪咪貓</span> 大聲說：</p>
-                    <h3 class="text-2xl md:text-4.5xl font-black text-slate-800 leading-normal" id="fill-sentence">
-                        聽到奶奶入院的消息，家人頓時變得 <span class="border-b-[6px] border-dashed border-sky-500 text-sky-600 font-black px-6 bg-sky-50 rounded-2xl mx-1 font-cartoon">？ ？ ？ ？</span>。
-                    </h3>
-                </div>
-            </div>
-
-            <!-- 森林木牌巨型選項 -->
-            <div class="space-y-4">
-                <p class="text-center text-sm md:text-lg font-black text-slate-500 uppercase tracking-widest">👇 誰能將正確的成語拼圖貼上來呢？</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="fill-options">
-                    <!-- 4個巨型選項按鈕 (JS動態填充) -->
-                </div>
-            </div>
-
-            <!-- 答題回饋 (大字大面板) -->
-            <div id="fill-feedback" class="hidden p-6 rounded-[32px] flex items-start space-x-4 transition-all duration-300 border-[6px]">
-                <div id="fill-feedback-icon" class="text-5xl md:text-6xl"></div>
+        <!-- ================= WORLD MAP SCREEN ================= -->
+        <div id="screen-map" class="w-full max-w-4xl glass-panel rounded-3xl p-6 shadow-2xl border border-indigo-500/20 flex flex-col gap-6 hidden">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-4">
                 <div>
-                    <h4 id="fill-feedback-title" class="font-black text-xl md:text-3xl"></h4>
-                    <p id="fill-feedback-desc" class="text-lg md:text-2xl mt-2 font-bold leading-relaxed"></p>
+                    <h2 class="text-2xl font-game text-indigo-400 flex items-center gap-2">
+                        <i class="fa-solid fa-map-marked-alt text-amber-400"></i> 時態大冒險地圖
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">點擊解鎖的島嶼進行挑戰！通關前四座島嶼即可解鎖魔王戰！</p>
+                </div>
+                <!-- Status Indicators -->
+                <div class="flex items-center gap-4 bg-slate-900/80 px-4 py-2 rounded-xl border border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <span id="map-avatar-icon" class="text-xl">🧙‍♂️</span>
+                        <span id="map-player-name" class="font-bold text-slate-200">Player</span>
+                    </div>
+                    <div class="h-4 w-px bg-slate-700"></div>
+                    <div class="text-amber-400 font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-star"></i> <span id="map-total-stars">0</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- 下一題按鈕 -->
-            <div class="flex justify-end">
-                <button id="btn-fill-next" onclick="nextFillQuestion()" class="hidden bg-emerald-500 hover:bg-emerald-600 text-white font-black px-8 py-5 rounded-2xl border-4 border-emerald-600 shadow-cartoon-sm transition items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl">
-                    <span>下一題</span> <i class="fa-solid fa-chevron-right"></i>
+            <!-- Visual Map Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 py-4">
+                <!-- Present Island -->
+                <div id="island-present" class="bg-emerald-950/40 border border-emerald-500/30 hover:border-emerald-400 rounded-2xl p-5 flex flex-col justify-between h-48 transition-all hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] cursor-pointer" onclick="enterIsland('present')">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl">🌱</span>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-xs px-2 py-0.5 rounded-full font-bold">島嶼 1</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-emerald-400">現在之島</h3>
+                        <p class="text-xs text-slate-400 mt-1">習慣、科學事實、第三人稱單數</p>
+                        <p class="text-xs text-slate-300 font-bold mt-2 font-game text-emerald-300">Present Simple</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 border-t border-slate-800 pt-2 text-xs">
+                        <span class="text-slate-400">進度: <span class="text-slate-200 font-bold" id="prog-present">0/3</span></span>
+                        <span class="text-emerald-400"><i class="fa-solid fa-unlock"></i> 已解鎖</span>
+                    </div>
+                </div>
+
+                <!-- Past Island -->
+                <div id="island-past" class="bg-amber-950/40 border border-amber-500/30 hover:border-amber-400 rounded-2xl p-5 flex flex-col justify-between h-48 transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] cursor-pointer" onclick="enterIsland('past')">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl">🏺</span>
+                        <span class="bg-amber-500/20 text-amber-300 text-xs px-2 py-0.5 rounded-full font-bold">島嶼 2</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-amber-400">過去之島</h3>
+                        <p class="text-xs text-slate-400 mt-1">過去完成動作、不規則變化</p>
+                        <p class="text-xs text-slate-300 font-bold mt-2 font-game text-amber-300">Past Simple</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 border-t border-slate-800 pt-2 text-xs">
+                        <span class="text-slate-400">進度: <span class="text-slate-200 font-bold" id="prog-past">0/3</span></span>
+                        <span class="text-amber-400"><i class="fa-solid fa-unlock"></i> 已解鎖</span>
+                    </div>
+                </div>
+
+                <!-- Continuous Island -->
+                <div id="island-continuous" class="bg-cyan-950/40 border border-cyan-500/30 hover:border-cyan-400 rounded-2xl p-5 flex flex-col justify-between h-48 transition-all hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] cursor-pointer" onclick="enterIsland('continuous')">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl">🌊</span>
+                        <span class="bg-cyan-500/20 text-cyan-300 text-xs px-2 py-0.5 rounded-full font-bold">島嶼 3</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-cyan-400">進行之島</h3>
+                        <p class="text-xs text-slate-400 mt-1">正在進行、當下、狀態動詞例外</p>
+                        <p class="text-xs text-slate-300 font-bold mt-2 font-game text-cyan-300">Continuous</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 border-t border-slate-800 pt-2 text-xs">
+                        <span class="text-slate-400">進度: <span class="text-slate-200 font-bold" id="prog-continuous">0/3</span></span>
+                        <span class="text-cyan-400"><i class="fa-solid fa-unlock"></i> 已解鎖</span>
+                    </div>
+                </div>
+
+                <!-- Future Island -->
+                <div id="island-future" class="bg-pink-950/40 border border-pink-500/30 hover:border-pink-400 rounded-2xl p-5 flex flex-col justify-between h-48 transition-all hover:shadow-[0_0_20px_rgba(236,72,153,0.2)] cursor-pointer" onclick="enterIsland('future')">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl">🚀</span>
+                        <span class="bg-pink-500/20 text-pink-300 text-xs px-2 py-0.5 rounded-full font-bold">島嶼 4</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-pink-400">未來之島</h3>
+                        <p class="text-xs text-slate-400 mt-1">will / be going to、時間線預測</p>
+                        <p class="text-xs text-slate-300 font-bold mt-2 font-game text-pink-300">Future Tense</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 border-t border-slate-800 pt-2 text-xs">
+                        <span class="text-slate-400">進度: <span class="text-slate-200 font-bold" id="prog-future">0/3</span></span>
+                        <span class="text-pink-400"><i class="fa-solid fa-unlock"></i> 已解鎖</span>
+                    </div>
+                </div>
+
+                <!-- Mixed Tense Boss Island -->
+                <div id="island-boss" class="opacity-50 pointer-events-none bg-rose-950/40 border border-slate-700 rounded-2xl p-5 flex flex-col justify-between h-48 transition-all duration-300" onclick="enterIsland('boss')">
+                    <div class="flex justify-between items-start">
+                        <span class="text-3xl" id="boss-emoji">🔒</span>
+                        <span class="bg-rose-500/20 text-rose-300 text-xs px-2 py-0.5 rounded-full font-bold">魔王關</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-rose-400" id="boss-title">時態大師挑戰</h3>
+                        <p class="text-xs text-slate-400 mt-1">綜合時態判斷、混淆語法終極決戰</p>
+                        <p class="text-xs text-slate-300 font-bold mt-2 font-game text-rose-300">Tense Master</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-3 border-t border-slate-800 pt-2 text-xs" id="boss-status">
+                        <span class="text-slate-400">需完成前四島</span>
+                        <span class="text-slate-500"><i class="fa-solid fa-lock"></i> 未解鎖</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guide Box -->
+            <div class="bg-indigo-950/40 border border-indigo-500/20 p-4 rounded-xl flex gap-3 items-center">
+                <span class="text-2xl">💡</span>
+                <p class="text-xs md:text-sm text-indigo-200">
+                    <strong>教師秘訣：</strong>您可以在點選各島嶼前，利用「教師控制台」自訂題目，更可以開啟「大字體模式」方便學生進行搶答唷！
+                </p>
+            </div>
+        </div>
+
+        <!-- ================= CHALLENGE (QUESTION) SCREEN ================= -->
+        <div id="screen-challenge" class="w-full max-w-2xl glass-panel rounded-3xl p-6 shadow-2xl border border-indigo-500/20 flex flex-col gap-5 hidden">
+            <!-- HUD (Heads-Up Display) -->
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4">
+                <button onclick="exitToMap()" class="text-slate-400 hover:text-white transition-all text-sm flex items-center gap-1">
+                    <i class="fa-solid fa-chevron-left"></i> 放棄撤退
+                </button>
+                <div class="flex items-center gap-4 text-sm font-bold">
+                    <div class="flex items-center gap-1 text-rose-500">
+                        <i class="fa-solid fa-heart"></i>
+                        <span id="hearts-container">❤️❤️❤️</span>
+                    </div>
+                    <div class="h-4 w-px bg-slate-700"></div>
+                    <div class="text-amber-400 flex items-center gap-1">
+                        <i class="fa-solid fa-star"></i>
+                        <span id="current-stars">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden">
+                <div id="challenge-progress-bar" class="bg-indigo-500 h-full w-1/3 transition-all duration-300"></div>
+            </div>
+
+            <!-- Island Badge -->
+            <div class="flex justify-between items-center">
+                <span id="challenge-island-badge" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-3 py-1 rounded-full font-bold">島嶼 1: 現在之島</span>
+                <span id="question-index-tag" class="text-xs text-slate-400">題目: 1 / 3</span>
+            </div>
+
+            <!-- Main Question Area -->
+            <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800 text-center relative overflow-hidden min-h-[140px] flex flex-col justify-center">
+                <div id="classroom-font-scaler" class="text-lg md:text-xl font-medium leading-relaxed" style="font-size: 1.25rem;">
+                    <p id="question-text" class="whitespace-pre-line"></p>
+                </div>
+            </div>
+
+            <!-- Answer Options -->
+            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <!-- Dynamically populated buttons -->
+            </div>
+
+            <!-- Hint Button and Panel -->
+            <div>
+                <button onclick="toggleHint()" class="text-indigo-400 hover:text-indigo-300 text-xs flex items-center gap-1 font-medium transition-all">
+                    <i class="fa-regular fa-lightbulb"></i> 顯示提示 (Hint)
+                </button>
+                <div id="hint-panel" class="hidden mt-2 p-3 bg-indigo-950/30 border border-indigo-500/10 text-indigo-200 text-xs rounded-xl">
+                    <!-- Hint text -->
+                </div>
+            </div>
+
+            <!-- Feedback & Explanation Panel -->
+            <div id="feedback-panel" class="hidden p-5 rounded-2xl border flex flex-col gap-3 transition-all duration-300">
+                <div class="flex items-center gap-2">
+                    <span id="feedback-icon" class="text-2xl"></span>
+                    <h4 id="feedback-title" class="font-game text-lg">答對了！</h4>
+                </div>
+                <p id="explanation-text" class="text-sm text-slate-300"></p>
+                <button id="btn-next" onclick="nextQuestion()" class="self-end bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2 rounded-xl text-sm transition-all flex items-center gap-1 shadow-md shadow-indigo-600/20">
+                    <span>下一題</span> <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
+        <!-- ================= VICTORY SCREEN ================= -->
+        <div id="screen-victory" class="w-full max-w-xl glass-panel rounded-3xl p-8 shadow-2xl text-center border border-indigo-500/20 flex flex-col gap-6 hidden">
+            <div class="flex justify-center text-6xl animate-bounce">🏆</div>
+            <div>
+                <h2 class="text-3xl font-game font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500">時態王國的英雄！</h2>
+                <p class="text-slate-300 mt-2 text-sm">
+                    恭喜 <span id="victory-player-name" class="font-bold text-indigo-400">勇士</span>，你成功收復了所有被魔王打亂的時態島嶼，時間軸恢復正常了！
+                </p>
+            </div>
 
-        <!-- ================= 5. 結算證書與森林大授勳 ================= -->
-        <div id="section-report" class="hidden max-w-2xl mx-auto space-y-8 py-4">
-            <!-- 卡通手繪證書 (放大排版) -->
-            <div class="bg-amber-50 rounded-[50px] p-8 md:p-12 shadow-cartoon border-[20px] border-amber-300 relative overflow-hidden" id="certificate-print">
-                
-                <!-- 手繪綠色葉子裝飾 -->
-                <div class="absolute -top-6 -left-6 text-emerald-400 text-7xl opacity-35"><i class="fa-solid fa-leaf"></i></div>
-                <div class="absolute -top-6 -right-6 text-emerald-400 text-7xl opacity-35"><i class="fa-solid fa-leaf"></i></div>
-                <div class="absolute -bottom-6 -left-6 text-emerald-400 text-7xl opacity-35"><i class="fa-solid fa-leaf"></i></div>
-                <div class="absolute -bottom-6 -right-6 text-emerald-400 text-7xl opacity-35"><i class="fa-solid fa-leaf"></i></div>
-                
-                <div class="text-center space-y-8">
-                    <!-- 森林守護者金牌勳章 (向量圖形 - 放大) -->
-                    <div class="relative w-40 h-40 mx-auto animate-bounce-slow">
-                        <svg viewBox="0 0 100 100" class="w-full h-full">
-                            <polygon points="50,0 60,35 95,35 65,55 80,95 50,70 20,95 35,55 5,35 40,35" fill="#facc15" stroke="#eab308" stroke-width="4"/>
-                            <circle cx="50" cy="50" r="28" fill="#15803d" stroke="#16a34a" stroke-width="3"/>
-                            <path d="M 50 32 C 35 45 45 68 50 68 C 55 68 65 45 50 32 Z" fill="#bbf7d0" stroke="#15803d" stroke-width="2"/>
-                            <circle cx="50" cy="50" r="22" fill="none" stroke="#fef08a" stroke-width="2" stroke-dasharray="4,4"/>
-                        </svg>
-                        <span class="absolute inset-0 flex items-center justify-center text-sm font-black text-emerald-900 mt-8 tracking-tight">守護者</span>
-                    </div>
-                    
-                    <h2 class="text-3xl md:text-5xl font-black tracking-wider text-emerald-950 font-cartoon">成語森林．守護者證書</h2>
-                    
-                    <div class="border-t-4 border-b-4 border-dashed border-amber-300 py-4 max-w-md mx-auto">
-                        <p class="text-lg md:text-2xl font-black text-amber-950">🌟 榮譽稱號：<span id="badge-title" class="text-emerald-800 font-black">金牌成語大導師</span></p>
-                    </div>
-
-                    <p class="text-lg md:text-2xl text-slate-800 leading-relaxed font-bold max-w-xl mx-auto">
-                        恭喜全班同學！你們在成語大冒險中，成功答對所有題目，共收集了 <span class="text-emerald-600 font-black text-3xl font-cartoon" id="report-score">0</span> 點森林魔法能量！
-                    </p>
-
-                    <!-- 老師和熊阿布的讚美 -->
-                    <div class="bg-emerald-100/70 border-[6px] border-emerald-300 p-6 rounded-[36px] max-w-lg mx-auto text-left relative">
-                        <div class="absolute -top-4 left-6 bg-emerald-600 text-white text-xs md:text-sm font-black px-4 py-1 rounded-full">🐻 熊阿布與中文老師的話</div>
-                        <p class="text-base md:text-xl text-emerald-950 leading-relaxed font-bold" id="teacher-feedback">
-                            大家的腦袋都太聰明啦！全班同心協力，這8個經典成語不論是字形還是意思都難不倒你們，老師非常期待看見你們把它們用在接下來的寫作中！
-                        </p>
-                    </div>
-
-                    <!-- 簽名與印章 -->
-                    <div class="flex justify-around items-center pt-6 text-sm md:text-lg text-amber-950 font-bold">
-                        <div>
-                            <p class="border-b-2 border-amber-300 pb-2 font-black">森林守護聯邦</p>
-                            <p class="mt-2 text-xs md:text-sm text-amber-900">認證機構</p>
-                        </div>
-                        <div class="relative">
-                            <!-- 紅色腳印印章 -->
-                            <div class="w-20 h-20 border-[6px] border-rose-500 rounded-full flex items-center justify-center text-rose-500 font-black text-xs transform -rotate-12 absolute -top-10 -left-12 opacity-80 flex-col">
-                                <span>🐾 通關</span>
-                                <span class="text-[10px] border-t border-rose-500 pt-0.5">森林考驗</span>
-                            </div>
-                            <p class="border-b-2 border-amber-300 pb-2 font-black">小熊阿布 & 老師</p>
-                            <p class="mt-2 text-xs md:text-sm text-amber-900">導師認證</p>
-                        </div>
-                    </div>
+            <!-- Scorecard -->
+            <div class="bg-slate-900/80 border border-slate-800 p-5 rounded-2xl grid grid-cols-2 gap-4">
+                <div class="text-center">
+                    <span class="text-slate-400 text-xs block mb-1">獲得總星星</span>
+                    <span class="text-2xl font-game text-amber-400"><i class="fa-solid fa-star"></i> <span id="victory-stars">0</span></span>
+                </div>
+                <div class="text-center">
+                    <span class="text-slate-400 text-xs block mb-1">生命值餘量</span>
+                    <span id="victory-hearts" class="text-xl">❤️❤️❤️</span>
                 </div>
             </div>
 
-            <!-- 控制鈕 -->
-            <div class="flex flex-col sm:flex-row gap-6 justify-center">
-                <button onclick="goMenu()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black px-10 py-5 rounded-[28px] border-4 border-emerald-600 shadow-cartoon-sm transition flex items-center justify-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-xl">
-                    <i class="fa-solid fa-house"></i> <span>返回首頁</span>
+            <!-- Certificate Mockup -->
+            <div class="border border-indigo-500/20 bg-indigo-950/20 rounded-xl p-4 text-xs text-slate-300 text-left leading-relaxed">
+                <div class="font-game text-indigo-400 text-center text-sm mb-2">⭐ 守護證書 (Grammar Guard Certificate) ⭐</div>
+                茲證明冒險者獲得「時態守護大師」之最高榮譽。已掌握四大時態之核心結構，成功擊潰時態魔王！
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-3">
+                <button onclick="resetGame()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold font-game px-6 py-3 rounded-xl transition-all flex-grow">
+                    重新冒險 <i class="fa-solid fa-rotate-left ml-1"></i>
                 </button>
-                <button onclick="resetAllGame()" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-black px-10 py-5 rounded-[28px] border-4 border-amber-500 shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-xl">
-                    <i class="fa-solid fa-rotate-left"></i> <span>重新冒險</span>
+                <button onclick="exitToMap()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-bold px-6 py-3 rounded-xl transition-all border border-slate-700">
+                    返回地圖
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= GAME OVER SCREEN ================= -->
+        <div id="screen-gameover" class="w-full max-w-xl glass-panel rounded-3xl p-8 shadow-2xl text-center border border-rose-500/20 flex flex-col gap-6 hidden">
+            <div class="flex justify-center text-6xl animate-pulse">💀</div>
+            <div>
+                <h2 class="text-3xl font-game font-bold text-rose-500">冒險失敗！</h2>
+                <p class="text-slate-300 mt-2 text-sm">
+                    生命值已耗盡。別灰心！這只是一次磨練文法的好機會，再試一次你一定能行！
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-3 justify-center">
+                <button onclick="exitToMap()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold font-game px-8 py-3 rounded-xl transition-all flex-grow">
+                    重返地圖與挑戰 <i class="fa-solid fa-map-location-dot ml-1"></i>
                 </button>
             </div>
         </div>
 
     </main>
 
-    <!-- 頁尾 -->
-    <footer class="bg-emerald-950 text-emerald-200 py-8 border-t-[10px] border-emerald-800 text-center text-sm md:text-base">
-        <div class="max-w-6xl mx-auto px-6 space-y-3 font-bold">
-            <p class="tracking-wider">🌳 全班投屏專用魔法庫（共8個）：六神無主 / 心悅誠服 / 心灰意冷 / 心往神馳 / 水深火熱 / 水落石出 / 打草驚蛇 / 功敗垂成</p>
-            <p>&copy; 2026 成語森林大冒險. 小學生卡通中文課堂專用大字版 🦁</p>
-        </div>
-    </footer>
+    <!-- ================= TEACHER PANEL (MODAL) ================= -->
+    <div id="teacher-panel" class="fixed inset-0 bg-slate-950/80 backdrop-filter backdrop-blur-sm z-50 flex justify-end transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="w-full max-w-2xl bg-slate-900 border-l border-slate-800 p-6 flex flex-col h-full overflow-y-auto shadow-2xl text-slate-100">
+            <!-- Header -->
+            <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-chalkboard-user text-indigo-400 text-2xl"></i>
+                    <div>
+                        <h3 class="text-lg font-bold font-game">教師專屬控制台 (Teacher's Desk)</h3>
+                        <p class="text-xs text-slate-400">設定並自訂您在課堂上的時態教材</p>
+                    </div>
+                </div>
+                <button onclick="toggleTeacherPanel()" class="text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
 
-    <!-- 自訂可愛大字彈窗 -->
-    <div id="modal-alert" class="fixed inset-0 z-50 bg-black/60 hidden flex items-center justify-center p-6">
-        <div class="bg-white rounded-[48px] max-w-lg w-full p-8 shadow-cartoon border-[10px] border-amber-300 text-center space-y-6 transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
-            <div class="text-8xl" id="modal-icon">🐹</div>
-            <h3 class="text-3xl md:text-4xl font-black text-slate-900 font-cartoon" id="modal-title">提示</h3>
-            <p class="text-lg md:text-2xl text-slate-700 leading-relaxed font-bold" id="modal-desc">內容</p>
-            <button onclick="closeModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-black w-full py-4 rounded-[24px] border-4 border-emerald-600 shadow-cartoon-sm transition active:translate-y-0.5 active:shadow-cartoon-active text-xl">好耶，沒問題！</button>
+            <!-- Quick Settings -->
+            <div class="mb-6 bg-slate-950/60 p-4 rounded-xl border border-slate-800 flex flex-col gap-3">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">課堂投影與教學輔助</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-800">
+                        <span class="text-xs text-slate-300">加大字體大小 (課堂投影)</span>
+                        <input type="checkbox" id="class-font-size" onchange="toggleClassFontSize()" class="w-4 h-4 text-indigo-600 rounded">
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900 p-3 rounded-lg border border-slate-800">
+                        <span class="text-xs text-slate-300">無限生命模式 (課堂教學)</span>
+                        <input type="checkbox" id="infinite-lives" onchange="toggleInfiniteLives()" class="w-4 h-4 text-indigo-600 rounded">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Editor -->
+            <div class="flex-grow flex flex-col gap-4">
+                <div class="flex justify-between items-center">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">目前遊戲題目編輯器</h4>
+                    <span class="text-slate-400 text-xs">共 15 題 (每島 3 題 + 魔王 3 題)</span>
+                </div>
+
+                <!-- Select Island for Edit -->
+                <div class="flex gap-2 mb-2 overflow-x-auto pb-2">
+                    <button id="tab-edit-present" onclick="switchEditorTab('present')" class="bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg shrink-0">現在之島</button>
+                    <button id="tab-edit-past" onclick="switchEditorTab('past')" class="bg-slate-800 text-slate-400 text-xs px-3 py-1.5 rounded-lg shrink-0">過去之島</button>
+                    <button id="tab-edit-continuous" onclick="switchEditorTab('continuous')" class="bg-slate-800 text-slate-400 text-xs px-3 py-1.5 rounded-lg shrink-0">進行之島</button>
+                    <button id="tab-edit-future" onclick="switchEditorTab('future')" class="bg-slate-800 text-slate-400 text-xs px-3 py-1.5 rounded-lg shrink-0">未來之島</button>
+                    <button id="tab-edit-boss" onclick="switchEditorTab('boss')" class="bg-slate-800 text-slate-400 text-xs px-3 py-1.5 rounded-lg shrink-0">魔王綜合</button>
+                </div>
+
+                <!-- Editor Form container -->
+                <div id="editor-form-container" class="space-y-4">
+                    <!-- Dynamically populated per-question form -->
+                </div>
+            </div>
+
+            <!-- Save Action -->
+            <div class="mt-6 border-t border-slate-800 pt-4 flex gap-3">
+                <button onclick="saveCustomQuestions()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all flex-grow">
+                    保存自訂題目變更
+                </button>
+                <button onclick="resetQuestionsDefault()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm px-4 py-2.5 rounded-xl transition-all border border-slate-700">
+                    恢復預設
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- 邏輯與音效 -->
+    <!-- Notification system to replace alert() -->
+    <div id="custom-toast" class="fixed bottom-6 right-6 bg-slate-900 border border-indigo-500/30 text-indigo-300 px-4 py-3 rounded-xl shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-2 z-50">
+        <i class="fa-solid fa-circle-info"></i>
+        <span id="toast-message">提示訊息</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full py-4 text-center text-xs text-slate-500 border-t border-slate-800/30 z-10">
+        <p>© 2026 英語時態大冒險 (Tense Adventure) - 專為英語教師打造的課堂互動平台</p>
+    </footer>
+
+    <!-- ================= GAME CORE LOGIC (JS) ================= -->
     <script>
-        // --- 8 個成語核心數據 (完全對應課本圖片1-8) ---
-        const idiomsData = [
-            { id: 1, word: "六神無主", meaning: "形容心慌意亂，拿不定主意。", example: "聽到奶奶入院的消息，家人頓時變得六神無主。", avatar: "🙀", animal: "咪咪貓", color: "red" },
-            { id: 2, word: "心悅誠服", meaning: "真心信服和服從。", example: "表哥這番話說得很有道理，不禁讓人心悅誠服。", avatar: "🙇‍♂️", animal: "小兔子", color: "blue" },
-            { id: 3, word: "心灰意冷", meaning: "形容灰心沮喪，意志消沉。", example: "張先生在外國的發展未如理想，心灰意冷下決定返回家鄉。", avatar: "😢", animal: "小青蛙", color: "purple" },
-            { id: 4, word: "心往神馳", meaning: "形容十分嚮往、思念。", example: "這裡如畫般的景色實在令人心往神馳。", avatar: "✨", animal: "小松鼠", color: "yellow" },
-            { id: 5, word: "水深火熱", meaning: "比喻處境非常艱難，生活痛苦。", example: "戰爭持續多年，人們一直過著水深火熱的生活。", avatar: "🌋", animal: "小綿羊", color: "orange" },
-            { id: 6, word: "水落石出", meaning: "比喻事情真相終於查個明白。", example: "在警方的全力追查下，案件終於水落石出。", avatar: "🔍", animal: "貓頭鷹", color: "green" },
-            { id: 7, word: "打草驚蛇", meaning: "比喻對付敵人時，行事不夠謹慎而使對方有所警覺，並且預先做了防備。", example: "關鍵時刻我們更要小心，否則會打草驚蛇。", avatar: "🐍", animal: "小狐狸", color: "yellow" },
-            { id: 8, word: "功敗垂成", meaning: "事情在即將成功時失敗了。", example: "這座大橋本來即將完工，一場地震卻讓它功敗垂成。", avatar: "💔", animal: "小熊布布", color: "red" }
-        ];
-
-        // --- 狀態變數 ---
-        let score = 0;
-        let isMuted = false;
-        let masteredIds = new Set(); 
-
-        // 記憶卡狀態
-        let currentCardIdx = 0;
-        let isCardFlipped = false;
-
-        // 啵啵拼字狀態
-        let currentUnscrambleIdx = 0;
-        let unscrambleQuestions = []; 
-        let currentUnscrambleInput = []; 
-        let unscrambleHasAnswered = false;
-
-        // 填空真心話狀態
-        let currentFillIdx = 0;
-        let fillQuestions = []; 
-        let fillHasAnswered = false;
-
-        // --- Web Audio API 卡通音效合成器 ---
-        let audioCtx = null;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function playSound(type) {
-            if (isMuted) return;
-            initAudio();
-            if (!audioCtx) return;
-
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            const now = audioCtx.currentTime;
-
-            if (type === 'correct') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now); 
-                osc.frequency.setValueAtTime(554.37, now + 0.08); 
-                osc.frequency.setValueAtTime(659.25, now + 0.16); 
-                osc.frequency.setValueAtTime(880, now + 0.24); 
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-                osc.start(now);
-                osc.stop(now + 0.5);
-            } else if (type === 'pop') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-                osc.start(now);
-                osc.stop(now + 0.08);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(220, now);
-                osc.frequency.linearRampToValueAtTime(110, now + 0.35);
-                gain.gain.setValueAtTime(0.15, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
-                osc.start(now);
-                osc.stop(now + 0.35);
-            } else if (type === 'click') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(600, now);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } else if (type === 'flip') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(200, now);
-                osc.frequency.linearRampToValueAtTime(400, now + 0.12);
-                gain.gain.setValueAtTime(0.08, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-                osc.start(now);
-                osc.stop(now + 0.12);
-            } else if (type === 'victory') {
-                const osc2 = audioCtx.createOscillator();
-                const gain2 = audioCtx.createGain();
-                osc2.connect(gain2);
-                gain2.connect(audioCtx.destination);
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, now); 
-                osc.frequency.setValueAtTime(659.25, now + 0.1); 
-                osc.frequency.setValueAtTime(783.99, now + 0.2); 
-                osc.frequency.setValueAtTime(1046.50, now + 0.3); 
-
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(261.63, now); 
-                osc2.frequency.setValueAtTime(329.63, now + 0.1); 
-                osc2.frequency.setValueAtTime(392.00, now + 0.2); 
-                osc2.frequency.setValueAtTime(523.25, now + 0.3); 
-
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
-                gain2.gain.setValueAtTime(0.1, now);
-                gain2.gain.exponentialRampToValueAtTime(0.01, now + 1.0);
-
-                osc.start(now);
-                osc.stop(now + 1.0);
-                osc2.start(now);
-                osc2.stop(now + 1.0);
-            }
-        }
-
-        // 靜音開關
-        function toggleMute() {
-            isMuted = !isMuted;
-            const icon = document.getElementById('sound-icon');
-            if (isMuted) {
-                icon.className = "fa-solid fa-volume-xmark text-2xl";
-            } else {
-                icon.className = "fa-solid fa-volume-high text-2xl";
-                playSound('click');
-            }
-        }
-
-        // --- 全局導航 ---
-        function goMenu() {
-            playSound('click');
-            showSection('section-menu');
-            renderIdiomsGrid();
-        }
-
-        function showSection(id) {
-            ['section-menu', 'section-flashcard', 'section-fill', 'section-unscramble', 'section-report'].forEach(sid => {
-                const el = document.getElementById(sid);
-                if (sid === id) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
+        // 1. Initial State Data (Questions covering the 4 tenses)
+        const DEFAULT_QUESTIONS = {
+            present: [
+                {
+                    id: 'p1',
+                    question: "Choose the correct verb form:\n\"Every morning, Sarah _______ her dog in the park before work.\"",
+                    options: ["walks", "is walking", "walked", "will walk"],
+                    answer: 0,
+                    hint: "注意時間副詞 \"Every morning\"，它代表一個固定重複的日常習慣。",
+                    explanation: "這是一個表示規律性習慣（Every morning）的句子，必須使用一般現在式（Simple Present Tense），且主詞 Sarah 為第三人稱單數。"
+                },
+                {
+                    id: 'p2',
+                    question: "Complete the sentence:\n\"The sun _______ in the east and sets in the west.\"",
+                    options: ["rise", "rises", "is rising", "rose"],
+                    answer: 1,
+                    hint: "大自然的客觀真理要使用什麼時態呢？",
+                    explanation: "大自然的真理、不變事實要用「一般現在式」，且 The sun 是單數，動詞字尾加 -s 變為 rises。"
+                },
+                {
+                    id: 'p3',
+                    question: "Which one is CORRECT?\n\"They _______ like spicy food, so they never order it.\"",
+                    options: ["doesn't", "don't", "aren't", "not"],
+                    answer: 1,
+                    hint: "主詞是 \"They\" 複數，一般現在式的否定助動詞應使用？",
+                    explanation: "主詞 They 為複數，否定一般動詞要用 don't 搭配動詞原形。"
                 }
-            });
-        }
-
-        function shuffleArray(arr) {
-            return arr.map(a => ({ sort: Math.random(), value: a }))
-                .sort((a, b) => a.sort - b.sort)
-                .map(a => a.value);
-        }
-
-        // 初始化
-        window.onload = function() {
-            renderIdiomsGrid();
-            document.body.addEventListener('click', () => {
-                initAudio();
-            }, { once: true });
+            ],
+            past: [
+                {
+                    id: 'pt1',
+                    question: "Complete the sentence:\n\"Yesterday, the students _______ a very interesting science museum.\"",
+                    options: ["visit", "visited", "are visiting", "will visit"],
+                    answer: 1,
+                    hint: "找出句中的時間副詞，它明確指出了這個動作發生在「昨天」。",
+                    explanation: "時間副詞 \"Yesterday\" 明確指出過去的時間，因此要選 visit 的過去式形式 visited。"
+                },
+                {
+                    id: 'pt2',
+                    question: "Choose the correct past form of \"buy\":\n\"He _______ a new laptop last weekend because his old one broke.\"",
+                    options: ["buys", "bought", "buyed", "was buying"],
+                    explanation: "Buy 為不規則動詞，其過去式是 bought。「Last weekend」代表過去的時間。"
+                },
+                {
+                    id: 'pt3',
+                    question: "Fill in the blank with the negative past tense:\n\"We _______ any homework last weekend, so we went to the beach.\"",
+                    options: ["didn't have", "don't have", "haven't", "won't have"],
+                    answer: 0,
+                    hint: "這是過去時態的否定句，一般過去式的否定助動詞要用哪一個？",
+                    explanation: "時間是 \"last weekend\"，否定助動詞一般用 didn't，後面接動詞原形 have。"
+                }
+            ],
+            continuous: [
+                {
+                    id: 'c1',
+                    question: "Look at the window! It _______ heavily right now.",
+                    options: ["rains", "is raining", "rained", "will rain"],
+                    answer: 1,
+                    hint: "祈使句 \"Look!\" 和關鍵字 \"right now\" 都在提示你這個動作正在進行中。",
+                    explanation: "\"Right now\" 表明事情正在發生，使用現在進行式（is/am/are + V-ing）最為正確。"
+                },
+                {
+                    id: 'c2',
+                    question: "Fill in the blank:\n\"Listen! Someone _______ the piano upstairs.\"",
+                    options: ["plays", "played", "is playing", "will play"],
+                    answer: 2,
+                    hint: "當叫你 \"Listen!\" 的時候，事情必定是在當下進行的。",
+                    explanation: "\"Listen!\"（聽！）表示當下發生的動作，應用現在進行式 is playing。"
+                },
+                {
+                    id: 'c3',
+                    question: "Identify the INCORRECT sentence:",
+                    options: [
+                        "She is knowing the answer to the question.",
+                        "They are watching a movie at the moment.",
+                        "We are having lunch right now.",
+                        "He is listening to the teacher."
+                    ],
+                    answer: 0,
+                    hint: "有一些「狀態動詞」(如 know, like, want, believe) 通常不使用進行式（-ing）。",
+                    explanation: "know（知道）是狀態動詞，不能以 V-ing（is knowing）形式出現，正確應寫成 \"She knows the answer...\"。"
+                }
+            ],
+            future: [
+                {
+                    id: 'f1',
+                    question: "Complete the sentence:\n\"Don't worry about the dinner. I _______ some pizzas online in a few minutes.\"",
+                    options: ["order", "ordered", "will order", "am ordering"],
+                    answer: 2,
+                    hint: "\"in a few minutes\" 意為「幾分鐘之後」，代表未來。而且這是一個臨時作出的決定。",
+                    explanation: "說話時做出的即興決定，且時間為 \"in a few minutes\"（幾分鐘後），使用一般未來式 will + 動詞原形。"
+                },
+                {
+                    id: 'f2',
+                    question: "Which sentence describes a future timetable or scheduled event?",
+                    options: [
+                        "The train leaves at 9:00 AM tomorrow.",
+                        "The train left at 9:00 AM yesterday.",
+                        "The train is moving fast right now.",
+                        "The train will probably arrive late."
+                    ],
+                    answer: 0,
+                    hint: "官方既定的班次、時刻表，即使是明天發生，也常常用一般現在式來表達唷！",
+                    explanation: "一般現在式（leaves）可以用於表示根據時刻表、日程表將在未來發生、且無法更改的行程。"
+                },
+                {
+                    id: 'f3',
+                    question: "Choose the correct question form:\n\"_______ you _______ to the party next Saturday?\"",
+                    options: ["Do; come", "Did; come", "Will; come", "Are; come"],
+                    answer: 2,
+                    hint: "\"next Saturday\" 代表下個星期六，屬於未來的時間。",
+                    explanation: "詢問下週六的計畫，未來式疑問句結構為：Will + 主詞 + 動詞原形。"
+                }
+            ],
+            boss: [
+                {
+                    id: 'b1',
+                    question: "Choose the correct sentence combination:\n\"When my mom walked into the room yesterday, I _______ my English textbook.\"",
+                    options: [
+                        "am reading",
+                        "was reading",
+                        "readed",
+                        "will read"
+                    ],
+                    answer: 1,
+                    hint: "昨天媽媽走進來的時候，我「正在」做某事（過去進行式）。",
+                    explanation: "此題挑戰過去進行式與過去簡單式的組合。媽媽進房（單一突發動作，用過去式 walked），那時我「正在」看書（用過去進行式 was reading）。"
+                },
+                {
+                    id: 'b2',
+                    question: "Identify the tense for a scientific fact:\n\"Water _______ of hydrogen and oxygen.\"",
+                    options: ["consists", "is consisting", "consisted", "will consist"],
+                    answer: 0,
+                    hint: "水分子由氫和氧組成是一個「永恆不變的科學事實」，該使用什麼時態？",
+                    explanation: "科學事實及真理一律使用一般現在式。且 Water（水）為不可數名詞，視為單數，因此選 consists。"
+                },
+                {
+                    id: 'b3',
+                    question: "Synthesize the timeline:\n\"By the time the school year ends next month, we _______ to three different countries.\"",
+                    options: [
+                        "will visit",
+                        "visited",
+                        "will have visited",
+                        "are visiting"
+                    ],
+                    answer: 2,
+                    hint: "這是一個挑戰題：到下個月學期結束「那時為止」，我們「將已經」拜訪過三個國家（未來完成式）。",
+                    explanation: "到未來某時間點為止將完成的動作，使用未來完成式（will have + 過去分詞 visited）。這最能考驗高階英語學生的理解力。"
+                }
+            ]
         };
 
-        // --- 首頁：渲染 8 個巨型可愛木牌卡片 ---
-        function renderIdiomsGrid() {
-            const grid = document.getElementById('idioms-grid');
-            grid.innerHTML = '';
+        // Game State variables
+        let gameQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+        let playerName = "小勇士";
+        let playerAvatar = "wizard";
+        let currentIsland = "present";
+        let currentQuestionIdx = 0;
+        let score = 0;
+        let hearts = 3;
+        let infiniteLives = false;
+        let islandProgress = {
+            present: 0,
+            past: 0,
+            continuous: 0,
+            future: 0,
+            boss: 0
+        };
 
-            const colors = [
-                'bg-rose-50 border-rose-200 text-rose-800 shadow-rose-200',
-                'bg-sky-50 border-sky-200 text-sky-800 shadow-sky-200',
-                'bg-purple-50 border-purple-200 text-purple-800 shadow-purple-200',
-                'bg-yellow-50 border-yellow-200 text-yellow-800 shadow-yellow-200',
-                'bg-orange-50 border-orange-200 text-orange-800 shadow-orange-200',
-                'bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-200',
-                'bg-amber-50 border-amber-200 text-amber-800 shadow-amber-200',
-                'bg-teal-50 border-teal-200 text-teal-800 shadow-teal-200'
-            ];
+        // UI screen switches
+        const screens = {
+            start: document.getElementById('screen-start'),
+            map: document.getElementById('screen-map'),
+            challenge: document.getElementById('screen-challenge'),
+            victory: document.getElementById('screen-victory'),
+            gameover: document.getElementById('screen-gameover')
+        };
 
-            idiomsData.forEach((idiom, index) => {
-                const isMastered = masteredIds.has(idiom.id);
-                const item = document.createElement('div');
+        function showScreen(screenId) {
+            Object.keys(screens).forEach(key => {
+                if (key === screenId) {
+                    screens[key].classList.remove('hidden');
+                } else {
+                    screens[key].classList.add('hidden');
+                }
+            });
+        }
+
+        // 2. Start Game Setup
+        function selectAvatar(avatarType, btnElement) {
+            playSound('click');
+            playerAvatar = avatarType;
+            document.querySelectorAll('.avatar-btn').forEach(btn => {
+                btn.classList.remove('border-indigo-500', 'bg-indigo-500/20');
+                btn.classList.add('border-transparent', 'bg-slate-800');
+                btn.querySelector('span:last-child').classList.remove('text-slate-300');
+                btn.querySelector('span:last-child').classList.add('text-slate-400');
+            });
+            btnElement.classList.add('border-indigo-500', 'bg-indigo-500/20');
+            btnElement.classList.remove('border-transparent', 'bg-slate-800');
+            btnElement.querySelector('span:last-child').classList.add('text-slate-300');
+            btnElement.querySelector('span:last-child').classList.remove('text-slate-400');
+        }
+
+        function getAvatarEmoji(type) {
+            switch(type) {
+                case 'wizard': return '🧙‍♂️';
+                case 'explorer': return '🤠';
+                case 'knight': return '🛡️';
+                case 'scholar': return '🧑‍🎓';
+                default: return '🧙‍♂️';
+            }
+        }
+
+        function startGame() {
+            playSound('click');
+            const nameInput = document.getElementById('player-name').value.trim();
+            playerName = nameInput || "文法守護者";
+            
+            // Sync user UI on HUD
+            document.getElementById('map-player-name').innerText = playerName;
+            document.getElementById('map-avatar-icon').innerText = getAvatarEmoji(playerAvatar);
+            
+            // Populate Map screen progress
+            updateMapScreen();
+            showScreen('map');
+        }
+
+        // 3. Map screen handling
+        function updateMapScreen() {
+            let totalStars = 0;
+            // Update individual progress counters
+            Object.keys(islandProgress).forEach(island => {
+                const progSpan = document.getElementById(`prog-${island}`);
+                if (progSpan) {
+                    progSpan.innerText = `${islandProgress[island]}/3`;
+                }
+                totalStars += islandProgress[island];
+            });
+
+            document.getElementById('map-total-stars').innerText = totalStars;
+
+            // Check if final boss can be unlocked
+            const preBossCleared = islandProgress.present >= 3 && 
+                                   islandProgress.past >= 3 && 
+                                   islandProgress.continuous >= 3 && 
+                                   islandProgress.future >= 3;
+
+            const bossIsland = document.getElementById('island-boss');
+            if (preBossCleared) {
+                bossIsland.classList.remove('opacity-50', 'pointer-events-none');
+                bossIsland.classList.add('border-rose-500/50', 'hover:border-rose-400', 'hover:shadow-[0_0_20px_rgba(244,63,94,0.3)]', 'cursor-pointer');
+                document.getElementById('boss-emoji').innerText = '👹';
+                document.getElementById('boss-status').innerHTML = `<span class="text-rose-400"><i class="fa-solid fa-unlock"></i> 已解鎖大師關</span>`;
+            } else {
+                bossIsland.classList.add('opacity-50', 'pointer-events-none');
+                bossIsland.classList.remove('border-rose-500/50', 'hover:border-rose-400', 'hover:shadow-[0_0_20px_rgba(244,63,94,0.3)]', 'cursor-pointer');
+                document.getElementById('boss-emoji').innerText = '🔒';
+                document.getElementById('boss-status').innerHTML = `<span class="text-slate-400">需完成前四島</span><span class="text-slate-500"><i class="fa-solid fa-lock"></i> 未解鎖</span>`;
+            }
+
+            // Check if final victory condition is met (boss is cleared)
+            if (islandProgress.boss >= 3) {
+                document.getElementById('victory-player-name').innerText = playerName;
+                document.getElementById('victory-stars').innerText = totalStars;
+                let heartStr = "";
+                for(let i=0; i<hearts; i++) heartStr += "❤️";
+                document.getElementById('victory-hearts').innerText = heartStr || "無傷通關！";
+                playSound('victory');
+                showScreen('victory');
+            }
+        }
+
+        function enterIsland(islandKey) {
+            playSound('click');
+            currentIsland = islandKey;
+            currentQuestionIdx = 0;
+            hearts = infiniteLives ? 999 : 3;
+            score = 0;
+
+            // Load Challenge view
+            updateIslandBadge(islandKey);
+            loadQuestion();
+            showScreen('challenge');
+        }
+
+        function updateIslandBadge(islandKey) {
+            const badge = document.getElementById('challenge-island-badge');
+            badge.className = "text-xs px-3 py-1 rounded-full font-bold border ";
+            switch (islandKey) {
+                case 'present':
+                    badge.innerText = "島嶼 1: 現在之島 (Present)";
+                    badge.classList.add("bg-emerald-500/10", "text-emerald-400", "border-emerald-500/20");
+                    break;
+                case 'past':
+                    badge.innerText = "島嶼 2: 過去之島 (Past)";
+                    badge.classList.add("bg-amber-500/10", "text-amber-400", "border-amber-500/20");
+                    break;
+                case 'continuous':
+                    badge.innerText = "島嶼 3: 進行之島 (Continuous)";
+                    badge.classList.add("bg-cyan-500/10", "text-cyan-400", "border-cyan-500/20");
+                    break;
+                case 'future':
+                    badge.innerText = "島嶼 4: 未來之島 (Future)";
+                    badge.classList.add("bg-pink-500/10", "text-pink-400", "border-pink-500/20");
+                    break;
+                case 'boss':
+                    badge.innerText = "魔王關: 時態大師 (Tense Master)";
+                    badge.classList.add("bg-rose-500/10", "text-rose-400", "border-rose-500/20");
+                    break;
+            }
+        }
+
+        // 4. Loading & Handling Questions
+        function loadQuestion() {
+            // Close feedback & hint panels
+            document.getElementById('feedback-panel').classList.add('hidden');
+            document.getElementById('hint-panel').classList.add('hidden');
+            
+            // Hearts rendering
+            const heartsCont = document.getElementById('hearts-container');
+            if (infiniteLives) {
+                heartsCont.innerHTML = `<i class="fa-solid fa-infinity"></i> 無限生命`;
+            } else {
+                let heartStr = "";
+                for(let i=0; i<hearts; i++) heartStr += "❤️";
+                heartsCont.innerText = heartStr || "無生命";
+            }
+
+            document.getElementById('current-stars').innerText = score;
+
+            // Progress bar and index
+            const questionsPool = gameQuestions[currentIsland];
+            const currentQuestion = questionsPool[currentQuestionIdx];
+            
+            document.getElementById('question-index-tag').innerText = `題目: ${currentQuestionIdx + 1} / ${questionsPool.length}`;
+            const percentage = ((currentQuestionIdx) / questionsPool.length) * 100;
+            document.getElementById('challenge-progress-bar').style.width = `${percentage}%`;
+
+            // Setup question text
+            document.getElementById('question-text').innerText = currentQuestion.question;
+
+            // Populate hint
+            document.getElementById('hint-panel').innerText = currentQuestion.hint || "此題沒有額外提示，請細心判斷時間副詞。";
+
+            // Generate Options buttons
+            const optionsCont = document.getElementById('options-container');
+            optionsCont.innerHTML = "";
+            currentQuestion.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full text-left bg-slate-900/80 border border-slate-800 hover:border-indigo-500 p-4 rounded-xl text-slate-200 transition-all hover:bg-indigo-950/20 flex justify-between items-center relative overflow-hidden";
+                btn.onclick = () => selectOption(idx, btn);
+                btn.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="bg-slate-800 text-slate-400 text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">${String.fromCharCode(65 + idx)}</span>
+                        <span class="font-medium text-sm md:text-base">${opt}</span>
+                    </div>
+                `;
+                optionsCont.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedIdx, btnElement) {
+            // Check if already answered
+            const isAnswered = !document.getElementById('feedback-panel').classList.contains('hidden');
+            if (isAnswered) return;
+
+            const questionsPool = gameQuestions[currentIsland];
+            const currentQuestion = questionsPool[currentQuestionIdx];
+            const correctIdx = currentQuestion.answer !== undefined ? currentQuestion.answer : 0; // Default fallback to first if undefined
+
+            // Disable further hover styles on option buttons
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.add('cursor-not-allowed');
+            });
+
+            const feedbackPanel = document.getElementById('feedback-panel');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const explanationText = document.getElementById('explanation-text');
+
+            if (selectedIdx === correctIdx) {
+                // Correct!
+                playSound('correct');
+                btnElement.classList.add('border-emerald-500', 'bg-emerald-950/40');
+                btnElement.classList.remove('bg-slate-900/80', 'border-slate-800');
+                btnElement.innerHTML += `<i class="fa-solid fa-circle-check text-emerald-400 text-xl mr-2"></i>`;
                 
-                const cardStyle = isMastered 
-                    ? 'bg-gradient-to-br from-green-50 to-emerald-100 border-emerald-400 text-emerald-950 border-b-[10px]'
-                    : `${colors[index % colors.length]} border-b-[10px]`;
+                score++;
+                document.getElementById('current-stars').innerText = score;
 
-                item.className = `p-6 rounded-[36px] border-4 transition duration-200 cursor-pointer flex flex-col justify-between h-56 relative group transform hover:-translate-y-2 active:translate-y-0.5 shadow-cartoon ${cardStyle}`;
+                feedbackPanel.className = "p-5 rounded-2xl border bg-emerald-950/30 border-emerald-500/30 flex flex-col gap-3 transition-all duration-300";
+                feedbackIcon.innerText = "🎉";
+                feedbackTitle.innerText = "答對了！太棒了！";
+                feedbackTitle.className = "font-game text-emerald-400 text-lg";
+            } else {
+                // Incorrect
+                playSound('wrong');
+                btnElement.classList.add('border-rose-500', 'bg-rose-950/40');
+                btnElement.classList.remove('bg-slate-900/80', 'border-slate-800');
+                btnElement.innerHTML += `<i class="fa-solid fa-circle-xmark text-rose-400 text-xl mr-2"></i>`;
+
+                // Highlight correct answer
+                const correctBtn = document.querySelectorAll('.option-btn')[correctIdx];
+                if (correctBtn) {
+                    correctBtn.classList.add('border-emerald-500', 'bg-emerald-950/20');
+                    correctBtn.innerHTML += `<i class="fa-solid fa-circle-check text-emerald-400 text-lg mr-2"></i>`;
+                }
+
+                if (!infiniteLives) {
+                    hearts--;
+                }
+
+                // Render current hearts
+                const heartsCont = document.getElementById('hearts-container');
+                if (infiniteLives) {
+                    heartsCont.innerHTML = `<i class="fa-solid fa-infinity"></i> 無限生命`;
+                } else {
+                    let heartStr = "";
+                    for(let i=0; i<hearts; i++) heartStr += "❤️";
+                    heartsCont.innerText = heartStr || "已死亡";
+                }
+
+                feedbackPanel.className = "p-5 rounded-2xl border bg-rose-950/30 border-rose-500/30 flex flex-col gap-3 transition-all duration-300";
+                feedbackIcon.innerText = "💫";
+                feedbackTitle.innerText = "可惜答錯了，再接再厲！";
+                feedbackTitle.className = "font-game text-rose-400 text-lg";
+            }
+
+            // Fill explanation and reveal next button
+            explanationText.innerText = currentQuestion.explanation || "未提供解析說明。";
+            feedbackPanel.classList.remove('hidden');
+
+            // Force scroll to next button/feedback panel on mobile
+            setTimeout(() => {
+                feedbackPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            const questionsPool = gameQuestions[currentIsland];
+            
+            if (hearts <= 0) {
+                // Game Over!
+                playSound('gameover');
+                showScreen('gameover');
+                return;
+            }
+
+            if (currentQuestionIdx < questionsPool.length - 1) {
+                currentQuestionIdx++;
+                loadQuestion();
+            } else {
+                // Island Cleared!
+                islandProgress[currentIsland] = Math.max(islandProgress[currentIsland], score);
                 
-                item.onclick = () => {
-                    playSound('click');
-                    currentCardIdx = idiomsData.findIndex(i => i.id === idiom.id);
-                    startMode('flashcard');
-                };
+                // Show notification toast
+                showToast(`🎉 成功通關 ${getIslandNameCH(currentIsland)}！獲得 ${score} 顆星星！`);
+                
+                // Return to map screen with new progress
+                updateMapScreen();
+                showScreen('map');
+            }
+        }
 
-                item.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <span class="text-sm font-black opacity-60 font-cartoon">🍀 No.0${idiom.id}</span>
-                        <div class="text-xl">
-                            ${isMastered 
-                                ? '<span class="text-emerald-600 font-black animate-pulse">💚 已掌握</span>' 
-                                : '<span class="text-slate-300 group-hover:text-amber-400 font-bold">⭐ 未掌握</span>'}
+        function getIslandNameCH(key) {
+            switch(key) {
+                case 'present': return '現在之島';
+                case 'past': return '過去之島';
+                case 'continuous': return '進行之島';
+                case 'future': return '未來之島';
+                case 'boss': return '時態魔王大師關卡';
+                default: return '冒險關卡';
+            }
+        }
+
+        function toggleHint() {
+            playSound('click');
+            const hintPanel = document.getElementById('hint-panel');
+            hintPanel.classList.toggle('hidden');
+        }
+
+        function exitToMap() {
+            playSound('click');
+            updateMapScreen();
+            showScreen('map');
+        }
+
+        function resetGame() {
+            playSound('click');
+            // Complete reset of progress
+            islandProgress = {
+                present: 0,
+                past: 0,
+                continuous: 0,
+                future: 0,
+                boss: 0
+            };
+            hearts = 3;
+            score = 0;
+            currentQuestionIdx = 0;
+            showScreen('start');
+        }
+
+        // 5. Toast Notifications
+        function showToast(message) {
+            const toast = document.getElementById('custom-toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+
+        // ================= TEACHER PANEL LOGIC =================
+        let activeEditorTab = 'present';
+
+        function toggleTeacherPanel() {
+            playSound('click');
+            const panel = document.getElementById('teacher-panel');
+            panel.classList.toggle('translate-x-full');
+            
+            // Pop the editor form initially
+            if (!panel.classList.contains('translate-x-full')) {
+                renderEditorForm();
+            }
+        }
+
+        function toggleClassFontSize() {
+            const check = document.getElementById('class-font-size');
+            const scaler = document.getElementById('classroom-font-scaler');
+            if (check.checked) {
+                scaler.style.fontSize = "1.65rem";
+                showToast("🔍 已開啟大字體模式，適合教室後方學生投影閱讀！");
+            } else {
+                scaler.style.fontSize = "1.25rem";
+            }
+        }
+
+        function toggleInfiniteLives() {
+            const check = document.getElementById('infinite-lives');
+            infiniteLives = check.checked;
+            if (infiniteLives) {
+                hearts = 999;
+                showToast("🛡️ 無限生命模式已啟用，適合無壓力的教學情境！");
+            } else {
+                hearts = 3;
+            }
+            // Update HUD hearts in real-time if in challenge mode
+            if (!screens.challenge.classList.contains('hidden')) {
+                loadQuestion();
+            }
+        }
+
+        function switchEditorTab(tabKey) {
+            playSound('click');
+            // update tab classes
+            const tabs = ['present', 'past', 'continuous', 'future', 'boss'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-edit-${t}`);
+                if (t === tabKey) {
+                    btn.className = "bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg shrink-0";
+                } else {
+                    btn.className = "bg-slate-800 text-slate-400 text-xs px-3 py-1.5 rounded-lg shrink-0";
+                }
+            });
+
+            activeEditorTab = tabKey;
+            renderEditorForm();
+        }
+
+        function renderEditorForm() {
+            const container = document.getElementById('editor-form-container');
+            container.innerHTML = "";
+            const currentQuestions = gameQuestions[activeEditorTab];
+
+            currentQuestions.forEach((q, qIdx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-slate-950/60 p-4 rounded-xl border border-slate-800 space-y-3";
+                qDiv.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <span class="text-xs font-bold text-indigo-400 font-game">QUESTION ${qIdx + 1}</span>
+                    </div>
+
+                    <!-- Question text edit -->
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs text-slate-400 font-semibold">題目敘述 / Question Text</label>
+                        <textarea id="edit-q-text-${qIdx}" rows="2" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-2 text-xs outline-none focus:border-indigo-500">${q.question}</textarea>
+                    </div>
+
+                    <!-- Options edit -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-slate-400">選項 A</label>
+                            <input type="text" id="edit-q-optA-${qIdx}" value="${q.options[0]}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-slate-400">選項 B</label>
+                            <input type="text" id="edit-q-optB-${qIdx}" value="${q.options[1]}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-slate-400">選項 C</label>
+                            <input type="text" id="edit-q-optC-${qIdx}" value="${q.options[2]}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-slate-400">選項 D</label>
+                            <input type="text" id="edit-q-optD-${qIdx}" value="${q.options[3] || ''}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
                         </div>
                     </div>
-                    <div class="text-center">
-                        <span class="text-5xl block filter drop-shadow-sm mb-2">${idiom.avatar}</span>
-                        <p class="font-black text-2xl md:text-3xl tracking-wider">${idiom.word}</p>
+
+                    <!-- Correct Answer Index & Hint -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-indigo-300">正確答案選項索引</label>
+                            <select id="edit-q-ans-${qIdx}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                                <option value="0" ${q.answer === 0 ? 'selected' : ''}>A (第一項)</option>
+                                <option value="1" ${q.answer === 1 ? 'selected' : ''}>B (第二項)</option>
+                                <option value="2" ${q.answer === 2 ? 'selected' : ''}>C (第三項)</option>
+                                <option value="3" ${q.answer === 3 ? 'selected' : ''}>D (第四項)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label class="text-xs text-slate-400">學生提示 (Hint)</label>
+                            <input type="text" id="edit-q-hint-${qIdx}" value="${q.hint || ''}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                        </div>
                     </div>
-                    <span class="text-xs md:text-sm text-center block font-black bg-white/70 py-1.5 rounded-full border border-slate-100 truncate">${idiom.meaning}</span>
+
+                    <!-- Explanation -->
+                    <div class="flex flex-col gap-1">
+                        <label class="text-xs text-slate-400">解析與說明 / Explanation</label>
+                        <input type="text" id="edit-q-expl-${qIdx}" value="${q.explanation || ''}" class="bg-slate-900 border border-slate-800 text-slate-100 rounded-lg p-1.5 text-xs outline-none focus:border-indigo-500">
+                    </div>
                 `;
-                grid.appendChild(item);
-            });
-
-            document.getElementById('mastery-count').textContent = masteredIds.size;
-        }
-
-        // 啟動模式
-        function startMode(mode) {
-            playSound('click');
-            if (mode === 'flashcard') {
-                isCardFlipped = false;
-                document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
-                showCard();
-                showSection('section-flashcard');
-            } else if (mode === 'unscramble') {
-                unscrambleQuestions = shuffleArray([...idiomsData]); 
-                currentUnscrambleIdx = 0;
-                loadUnscrambleQuestion();
-                showSection('section-unscramble');
-            } else if (mode === 'fill') {
-                fillQuestions = shuffleArray([...idiomsData]); 
-                currentFillIdx = 0;
-                loadFillQuestion();
-                showSection('section-fill');
-            }
-        }
-
-        // --- 1. 意思猜猜樂邏輯 (核心反轉) ---
-        function showCard() {
-            const idiom = idiomsData[currentCardIdx];
-            
-            // 【正面】：放出成語意思 (解釋)
-            document.getElementById('fc-word').textContent = idiom.meaning;
-            
-            // 根據解釋文字長度微調字體大小，避免投屏溢出
-            const fcWordEl = document.getElementById('fc-word');
-            if (idiom.meaning.length > 20) {
-                fcWordEl.className = "text-xl md:text-3xl lg:text-4xl font-black text-emerald-800 leading-relaxed filter drop-shadow-sm";
-            } else {
-                fcWordEl.className = "text-3xl md:text-5xl font-black text-emerald-800 leading-relaxed filter drop-shadow-sm";
-            }
-
-            // 【背面】：揭曉正確成語 (大字)
-            document.getElementById('fc-meaning').textContent = idiom.word;
-            document.getElementById('fc-avatar').textContent = idiom.avatar;
-            
-            // 背面例句
-            const highlightedExample = idiom.example.replace(idiom.word, `<strong class="text-emerald-700 bg-emerald-100 border-[3px] border-emerald-300 px-3 py-1 rounded-2xl">${idiom.word}</strong>`);
-            document.getElementById('fc-example').innerHTML = highlightedExample;
-            
-            // 更新卡片底部的編號
-            document.getElementById('fc-num').textContent = String(idiom.id);
-            document.getElementById('flashcard-progress').textContent = `${currentCardIdx + 1} / 8`;
-
-            updateMasteryBtnUI(idiom.id);
-        }
-
-        function flipCard() {
-            playSound('flip');
-            isCardFlipped = !isCardFlipped;
-            const inner = document.getElementById('flashcard-inner');
-            if (isCardFlipped) {
-                inner.classList.add('rotate-y-180');
-            } else {
-                inner.classList.remove('rotate-y-180');
-            }
-        }
-
-        function prevCard() {
-            playSound('click');
-            if (isCardFlipped) {
-                flipCard();
-                setTimeout(() => {
-                    currentCardIdx = (currentCardIdx - 1 + 8) % 8;
-                    showCard();
-                }, 200);
-            } else {
-                currentCardIdx = (currentCardIdx - 1 + 8) % 8;
-                showCard();
-            }
-        }
-
-        function nextCard() {
-            playSound('click');
-            if (isCardFlipped) {
-                flipCard();
-                setTimeout(() => {
-                    currentCardIdx = (currentCardIdx + 1) % 8;
-                    showCard();
-                }, 200);
-            } else {
-                currentCardIdx = (currentCardIdx + 1) % 8;
-                showCard();
-            }
-        }
-
-        // 答對了！事件處理函數，確保傳入 e
-        function toggleMasteryCurrent(e) {
-            if (e) {
-                e.stopPropagation(); // 阻止卡片翻牌觸發
-            }
-            playSound('click');
-            const idiom = idiomsData[currentCardIdx];
-            if (masteredIds.has(idiom.id)) {
-                masteredIds.delete(idiom.id);
-            } else {
-                masteredIds.add(idiom.id);
-                addScore(10); 
-                
-                // 取得點擊位置，如果找不到點擊位置則用螢幕中央
-                const clickX = e ? e.clientX : window.innerWidth / 2;
-                const clickY = e ? e.clientY : window.innerHeight / 2;
-                createStarEffect(clickX, clickY);
-            }
-            updateMasteryBtnUI(idiom.id);
-        }
-
-        function updateMasteryBtnUI(idiomId) {
-            const btn = document.getElementById('btn-mastery-card');
-            const txt = document.getElementById('mastery-card-text');
-            if (masteredIds.has(idiomId)) {
-                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-black px-8 py-4 rounded-2xl border-4 border-emerald-400 shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl animate-pulse";
-                txt.textContent = "🌟 全班已答對！(點擊取消)";
-            } else {
-                btn.className = "bg-amber-400 hover:bg-amber-500 text-amber-950 font-black px-8 py-4 rounded-2xl border-4 border-amber-500 shadow-cartoon-sm transition flex items-center space-x-2 active:translate-y-0.5 active:shadow-cartoon-active text-lg md:text-2xl";
-                txt.textContent = "🏆 全班答對了！加 10 點能量";
-            }
-        }
-
-
-        // --- 2. 啵啵氣泡拼拼樂 ---
-        function loadUnscrambleQuestion() {
-            unscrambleHasAnswered = false;
-            currentUnscrambleInput = [];
-            document.getElementById('btn-unscramble-next').classList.add('hidden');
-            
-            const currentQ = unscrambleQuestions[currentUnscrambleIdx];
-            document.getElementById('unscramble-meaning').textContent = currentQ.meaning;
-            document.getElementById('unscramble-progress').textContent = `${currentUnscrambleIdx + 1} / 8`;
-
-            // 清插槽
-            for (let i = 0; i < 4; i++) {
-                const slot = document.getElementById(`u-slot-${i}`);
-                slot.textContent = '';
-                slot.className = "unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-800 transition shadow-inner";
-            }
-
-            const targetChars = currentQ.word.split('');
-            const distractorPool = "心水深火落石出打草驚蛇功敗垂成六神誠服意冷神馳";
-            const distractorChars = [];
-            while (distractorChars.length < 2) {
-                const char = distractorPool[Math.floor(Math.random() * distractorPool.length)];
-                if (!targetChars.includes(char) && !distractorChars.includes(char)) {
-                    distractorChars.push(char);
-                }
-            }
-
-            const allChars = shuffleArray([...targetChars, ...distractorChars]);
-
-            // 渲染泡泡
-            const bubbleContainer = document.getElementById('unscramble-bubbles');
-            bubbleContainer.innerHTML = '';
-            
-            const bubbleColors = [
-                'from-pink-100 to-pink-200 border-pink-300 text-pink-800',
-                'from-sky-100 to-sky-200 border-sky-300 text-sky-800',
-                'from-amber-100 to-amber-200 border-amber-300 text-amber-800',
-                'from-emerald-100 to-emerald-200 border-emerald-300 text-emerald-800',
-                'from-indigo-100 to-indigo-200 border-indigo-300 text-indigo-800',
-                'from-orange-100 to-orange-200 border-orange-300 text-orange-800'
-            ];
-
-            allChars.forEach((char, idx) => {
-                const btn = document.createElement('button');
-                const col = bubbleColors[idx % bubbleColors.length];
-                btn.className = `bubble-item w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br ${col} border-[6px] text-4xl md:text-5xl flex items-center justify-center shadow-cartoon-sm hover:scale-105 active:scale-95 transition-all duration-150 font-black relative`;
-                btn.innerHTML = `
-                    <span class="relative z-10">${char}</span>
-                    <span class="absolute top-3 left-4 w-4 h-4 bg-white/70 rounded-full pointer-events-none"></span>
-                `;
-                btn.onclick = (e) => clickCharBubble(char, btn, e);
-                bubbleContainer.appendChild(btn);
+                container.appendChild(qDiv);
             });
         }
 
-        function clickCharBubble(char, btn, event) {
-            if (unscrambleHasAnswered) return;
+        function saveCustomQuestions() {
+            playSound('correct');
+            const currentQuestions = gameQuestions[activeEditorTab];
 
-            if (btn.classList.contains('opacity-25')) return;
-
-            const currentQ = unscrambleQuestions[currentUnscrambleIdx];
-            const targetChars = currentQ.word.split('');
-            const expectedChar = targetChars[currentUnscrambleInput.length];
-
-            if (char === expectedChar) {
-                playSound('pop');
-                const slotIdx = currentUnscrambleInput.length;
-                currentUnscrambleInput.push(char);
-                
-                const slot = document.getElementById(`u-slot-${slotIdx}`);
-                slot.textContent = char;
-                slot.className = "unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-solid border-emerald-500 rounded-full bg-emerald-100 flex items-center justify-center text-4xl md:text-6xl font-black text-emerald-800 transition scale-110";
-
-                btn.classList.add('opacity-25', 'pointer-events-none');
-                btn.classList.remove('hover:scale-105');
-
-                if (currentUnscrambleInput.length === 4) {
-                    unscrambleHasAnswered = true;
-                    playSound('correct');
-                    addScore(20); 
-                    
-                    const clickX = event ? event.clientX : window.innerWidth / 2;
-                    const clickY = event ? event.clientY : window.innerHeight / 2;
-                    createStarEffect(clickX, clickY);
-
-                    for (let i = 0; i < 4; i++) {
-                        document.getElementById(`u-slot-${i}`).className = "unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-solid border-emerald-600 rounded-full bg-emerald-200 flex items-center justify-center text-4xl md:text-6xl font-black text-emerald-900 transition animate-bounce";
-                    }
-
-                    document.querySelectorAll('.bubble-item').forEach(b => {
-                        b.classList.add('opacity-25', 'pointer-events-none');
-                    });
-
-                    document.getElementById('btn-unscramble-next').classList.remove('hidden');
-                }
-            } else {
-                playSound('wrong');
-                const nextSlotIdx = currentUnscrambleInput.length;
-                const slot = document.getElementById(`u-slot-${nextSlotIdx}`);
-                slot.className = "unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-solid border-rose-400 rounded-full bg-rose-100 flex items-center justify-center text-4xl md:text-6xl font-black text-rose-800 transition";
-                
-                btn.classList.add('from-rose-400', 'to-rose-500', 'text-white');
-                setTimeout(() => {
-                    btn.classList.remove('from-rose-400', 'to-rose-500', 'text-white');
-                }, 400);
-
-                setTimeout(() => {
-                    resetCurrentUnscramble();
-                }, 500);
-            }
-        }
-
-        function resetCurrentUnscramble() {
-            if (unscrambleHasAnswered) return;
-            currentUnscrambleInput = [];
-            for (let i = 0; i < 4; i++) {
-                const slot = document.getElementById(`u-slot-${i}`);
-                slot.textContent = '';
-                slot.className = "unscramble-slot w-20 h-20 md:w-28 md:h-28 border-[6px] border-dashed border-sky-300 rounded-full bg-sky-50 flex items-center justify-center text-4xl md:text-6xl font-black text-sky-700 transition shadow-inner";
-            }
-            document.querySelectorAll('.bubble-item').forEach(btn => {
-                btn.classList.remove('opacity-25', 'pointer-events-none');
-                btn.classList.add('hover:scale-105');
-            });
-        }
-
-        function nextUnscrambleQuestion() {
-            playSound('click');
-            if (currentUnscrambleIdx < unscrambleQuestions.length - 1) {
-                currentUnscrambleIdx++;
-                loadUnscrambleQuestion();
-            } else {
-                showCustomModal("🏆 啵啵氣泡全數通關！", "各位同學好棒，擊破了所有的障礙泡泡！接下來要幫森林小動物解答「真心話」囉！", "🐶", () => {
-                    startMode('fill');
-                });
-            }
-        }
-
-
-        // --- 3. 動物真心話連線 ---
-        function loadFillQuestion() {
-            fillHasAnswered = false;
-            document.getElementById('fill-feedback').classList.add('hidden');
-            document.getElementById('btn-fill-next').classList.add('hidden');
-
-            const currentQ = fillQuestions[currentFillIdx];
-            
-            const emptyBlank = `<span class="border-b-[6px] border-dashed border-sky-500 text-sky-600 font-black px-6 py-1 bg-sky-50 rounded-2xl mx-1 font-cartoon inline-block"> ？ ？ ？ ？ </span>`;
-            const sentenceWithBlank = currentQ.example.replace(currentQ.word, emptyBlank);
-            
-            document.getElementById('fill-sentence').innerHTML = sentenceWithBlank;
-            document.getElementById('fill-progress').textContent = `${currentFillIdx + 1} / 8`;
-            document.getElementById('fill-animal-avatar').textContent = currentQ.avatar;
-            document.getElementById('fill-animal-name').textContent = currentQ.animal;
-
-            let options = [currentQ];
-            const otherIdioms = idiomsData.filter(i => i.id !== currentQ.id);
-            const shuffledOthers = shuffleArray(otherIdioms);
-            options.push(shuffledOthers[0], shuffledOthers[1], shuffledOthers[2]);
-            options = shuffleArray(options);
-
-            const container = document.getElementById('fill-options');
-            container.innerHTML = '';
-            
-            const plateColors = [
-                'bg-amber-100 hover:bg-amber-200 border-amber-400 text-amber-950',
-                'bg-amber-100 hover:bg-amber-200 border-amber-400 text-amber-950',
-                'bg-amber-100 hover:bg-amber-200 border-amber-400 text-amber-950',
-                'bg-amber-100 hover:bg-amber-200 border-amber-400 text-amber-950'
-            ];
-
-            options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = `fill-option-btn border-4 p-6 rounded-[32px] text-left font-black transition transform hover:-translate-y-1.5 shadow-cartoon flex items-center space-x-4 w-full active:translate-y-0.5 active:shadow-cartoon-active ${plateColors[idx]}`;
-                btn.innerHTML = `
-                    <span class="w-14 h-14 rounded-2xl bg-amber-300 text-amber-950 font-black flex items-center justify-center flex-shrink-0 font-cartoon border-4 border-amber-500 text-2xl">${String.fromCharCode(65 + idx)}</span>
-                    <span class="text-2xl md:text-3xl tracking-wider">${opt.word}</span>
-                `;
-                btn.onclick = (e) => selectFillAnswer(opt.id, btn, e);
-                container.appendChild(btn);
-            });
-        }
-
-        function selectFillAnswer(selectedId, selectedBtn, event) {
-            if (fillHasAnswered) return;
-            fillHasAnswered = true;
-
-            const currentQ = fillQuestions[currentFillIdx];
-            const isCorrect = selectedId === currentQ.id;
-
-            const buttons = document.querySelectorAll('.fill-option-btn');
-            buttons.forEach(btn => {
-                btn.classList.remove('hover:bg-amber-200', 'hover:-translate-y-1.5');
+            currentQuestions.forEach((q, qIdx) => {
+                q.question = document.getElementById(`edit-q-text-${qIdx}`).value;
+                q.options[0] = document.getElementById(`edit-q-optA-${qIdx}`).value;
+                q.options[1] = document.getElementById(`edit-q-optB-${qIdx}`).value;
+                q.options[2] = document.getElementById(`edit-q-optC-${qIdx}`).value;
+                q.options[3] = document.getElementById(`edit-q-optD-${qIdx}`).value;
+                q.answer = parseInt(document.getElementById(`edit-q-ans-${qIdx}`).value);
+                q.hint = document.getElementById(`edit-q-hint-${qIdx}`).value;
+                q.explanation = document.getElementById(`edit-q-expl-${qIdx}`).value;
             });
 
-            if (isCorrect) {
-                playSound('correct');
-                addScore(15); 
-                
-                const clickX = event ? event.clientX : window.innerWidth / 2;
-                const clickY = event ? event.clientY : window.innerHeight / 2;
-                createStarEffect(clickX, clickY);
-                
-                selectedBtn.className = "fill-option-btn bg-emerald-100 border-4 border-emerald-500 p-6 rounded-[32px] text-left font-black text-emerald-950 flex items-center space-x-4 w-full shadow-cartoon";
-                selectedBtn.querySelector('span').className = "w-14 h-14 rounded-2xl bg-emerald-500 text-white font-black flex items-center justify-center flex-shrink-0 border-4 border-emerald-600 text-2xl";
-                
-                const filledWord = `<span class="bg-emerald-100 border-[6px] border-emerald-400 text-emerald-900 font-black px-6 py-2 rounded-3xl mx-1 inline-block">${currentQ.word}</span>`;
-                document.getElementById('fill-sentence').innerHTML = currentQ.example.replace(currentQ.word, filledWord);
+            showToast("💾 教師自訂題目保存成功！");
+            toggleTeacherPanel();
 
-                showFillFeedback(true, "答對了！全班太優秀了 🐻🌟", `「${currentQ.word}」放在這個句子裡完全正確！意思是：「${currentQ.meaning}」`);
-            } else {
-                playSound('wrong');
-                selectedBtn.className = "fill-option-btn bg-rose-100 border-4 border-rose-400 p-6 rounded-[32px] text-left font-black text-rose-950 flex items-center space-x-4 w-full shadow-cartoon";
-                selectedBtn.querySelector('span').className = "w-14 h-14 rounded-2xl bg-rose-500 text-white font-black flex items-center justify-center flex-shrink-0 border-4 border-rose-600 text-2xl";
-                
-                buttons.forEach(btn => {
-                    const textSpan = btn.querySelector('span:nth-child(2)');
-                    if (textSpan && textSpan.textContent.trim() === currentQ.word) {
-                        btn.className = "fill-option-btn bg-emerald-50 border-4 border-emerald-400 p-6 rounded-[32px] text-left font-black text-emerald-900 flex items-center space-x-4 w-full opacity-90";
-                    } else if (btn !== selectedBtn) {
-                        btn.classList.add('opacity-40');
-                    }
-                });
-
-                showFillFeedback(false, "哎呀，差一點點就對囉！🐱💧", `正確成語應該是「${currentQ.word}」喔！\n意思：「${currentQ.meaning}」`);
+            // Refresh challenge window if open
+            if (!screens.challenge.classList.contains('hidden')) {
+                loadQuestion();
             }
-
-            document.getElementById('btn-fill-next').classList.remove('hidden');
         }
 
-        function showFillFeedback(isCorrect, title, desc) {
-            const panel = document.getElementById('fill-feedback');
-            const icon = document.getElementById('fill-feedback-icon');
-            const tEl = document.getElementById('fill-feedback-title');
-            const dEl = document.getElementById('fill-feedback-desc');
-
-            panel.classList.remove('hidden');
-            if (isCorrect) {
-                panel.className = "p-6 rounded-[32px] bg-emerald-50 border-4 border-emerald-300 text-emerald-900 flex items-start space-x-4 shadow-sm";
-                icon.textContent = "🦁";
-            } else {
-                panel.className = "p-6 rounded-[32px] bg-rose-50 border-4 border-rose-300 text-rose-900 flex items-start space-x-4 shadow-sm";
-                icon.textContent = "🦊";
-            }
-            tEl.textContent = title;
-            dEl.textContent = desc;
-        }
-
-        function nextFillQuestion() {
+        function resetQuestionsDefault() {
             playSound('click');
-            if (currentFillIdx < fillQuestions.length - 1) {
-                currentFillIdx++;
-                loadFillQuestion();
-            } else {
-                showReport();
-            }
-        }
-
-
-        // --- 能量積累與原生 CSS 星星特效 (徹底解決相容與代碼錯誤) ---
-        function addScore(amount) {
-            score += amount;
-            document.getElementById('user-score').textContent = score;
-        }
-
-        function createStarEffect(x, y) {
-            const emojis = ["⭐", "✨", "🍀", "💫", "🌟"];
-            for (let i = 0; i < 15; i++) {
-                const star = document.createElement('div');
-                star.className = "fixed pointer-events-none z-50 text-2xl md:text-4xl transition-all duration-1000 ease-out opacity-100 select-none";
-                star.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                
-                // 起始定位在點擊處
-                star.style.left = `${x}px`;
-                star.style.top = `${y}px`;
-                star.style.transform = "translate(-50%, -50%) scale(1)";
-                document.body.appendChild(star);
-                
-                // 隨機發散方向與距離
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 60 + Math.random() * 120;
-                const tx = Math.cos(angle) * distance;
-                const ty = Math.sin(angle) * distance;
-
-                // 觸發原生 transition 平移動畫
-                setTimeout(() => {
-                    star.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0.3)`;
-                    star.style.opacity = "0";
-                }, 15);
-
-                // 動畫結束後自動清除
-                setTimeout(() => {
-                    star.remove();
-                }, 1000);
-            }
-        }
-
-
-        // --- 5. 森林結算大授勳 ---
-        function showReport() {
-            playSound('victory');
-            showSection('section-report');
-
-            document.getElementById('report-score').textContent = score;
-
-            const badgeTitle = document.getElementById('badge-title');
-            const feedback = document.getElementById('teacher-feedback');
-
-            if (score >= 300) {
-                badgeTitle.textContent = "🥇 首席．森林大導師";
-                feedback.innerHTML = `🌟 <strong>超級森林大導師評語：</strong>太厲害啦！你們獲得了傳說級的滿分能量！這 8 個高難度的成語不論是意思、字音、用法通通難不倒全班同學！熊阿布和整座森林的動物都封大家為大護法！🎉`;
-            } else if (score >= 180) {
-                badgeTitle.textContent = "🥈 金牌．成語小戰士";
-                feedback.innerHTML = `👍 <strong>森林長老評語：</strong>做的非常卓越！大家擁有一流的成語敏銳度。能流暢地拼出打亂的泡泡字、也幫助小動物解密了真心話，希望同學們能試著在平日的週記或講話中多多運用成語喔！`;
-            } else {
-                badgeTitle.textContent = "🥉 銅牌．成語見習生";
-                feedback.innerHTML = `🌱 <strong>冒險導師評語：</strong>恭喜完成了第一次歷練！成語需要常常複習才會熟悉。現在可以回到主選單點擊「魔法成語書」，只要點點「我學會了」就可以快速收錄卡片、累積大量森林能量哦！`;
-            }
-        }
-
-        function resetAllGame() {
-            playSound('click');
-            score = 0;
-            masteredIds.clear();
-            document.getElementById('user-score').textContent = "0";
-            goMenu();
-        }
-
-
-        // --- 自訂卡通彈窗 (超大字版) ---
-        let modalCallback = null;
-        function showCustomModal(title, desc, animalEmoji = "🦊", callback = null) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
-            document.getElementById('modal-icon').textContent = animalEmoji;
-            
-            const modal = document.getElementById('modal-alert');
-            const content = document.getElementById('modal-content');
-            modal.classList.remove('hidden');
-            
-            setTimeout(() => {
-                content.classList.remove('scale-95', 'opacity-0');
-                content.classList.add('scale-100', 'opacity-100');
-            }, 10);
-
-            modalCallback = callback;
-        }
-
-        function closeModal() {
-            playSound('click');
-            const modal = document.getElementById('modal-alert');
-            const content = document.getElementById('modal-content');
-            
-            content.classList.remove('scale-100', 'opacity-100');
-            content.classList.add('scale-95', 'opacity-0');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                if (modalCallback) {
-                    modalCallback();
-                    modalCallback = null;
-                }
-            }, 250);
+            gameQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+            renderEditorForm();
+            showToast("🔄 已恢復至系統預設文法題目庫。");
         }
     </script>
 </body>
